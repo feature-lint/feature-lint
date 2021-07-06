@@ -1,0 +1,11 @@
+node_modules
+
+.vscode
+
+*.code-workspace
+
+packages/*/dist
+
+.pnpm-debug.log
+
+NOTES.md

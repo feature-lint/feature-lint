@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../../../../packages/schema/dist/feature.schema.json",
+
+  "featureType": "foo",
+
+  "rules": [
+    {
+      "name": "allowed-dependencies",
+      "dependencies": [
+        {
+          "feature": "bar1"
+        }
+      ]
+    }
+  ]
+}
