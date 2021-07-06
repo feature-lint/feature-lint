@@ -1,0 +1,37 @@
+name: Update versions / Publish packages
+on:
+  push:
+    branches:
+      - master
+jobs:
+  version:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          registry-url: https://registry.npmjs.org
+          always-auth: true
+      - name: Install pnpm
+        run: npm i pnpm@latest -g
+      # changsets always look in $HOME so we just copy it there
+      - name: Copy .npmrc to $HOME
+        run: cp "$NPM_CONFIG_USERCONFIG" "$HOME/.npmrc"
+      - name: Install dependencies
+        run: pnpm install
+      - name: Update versions / Publish packages
+        uses: changesets/action@master
+        with:
+          commit: "Update package versions"
+          title: "Update package versions"
+          publish: pnpm run publish-packages
+          version: pnpm run version-packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

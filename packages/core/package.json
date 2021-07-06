@@ -1,0 +1,48 @@
+{
+  "name": "@feature-lint/core",
+  "version": "0.0.3",
+  "description": "",
+  "scripts": {
+    "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules --no-warnings\" jest",
+    "test:watch": "cross-env NODE_OPTIONS=\"--experimental-vm-modules --no-warnings\" jest --watch",
+    "build": "tsc",
+    "build:watch": "tsc --watch"
+  },
+  "author": "Renke Grunwald <renke@renke.org>",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.12.2",
+    "cross-env": "^7.0.3",
+    "jest": "^27.0.4",
+    "ts-jest": "^27.0.3",
+    "typescript": "4.3.2"
+  },
+  "type": "module",
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "jsonc-parser": "^3.0.0",
+    "zod": "^3.2.0"
+  },
+  "main": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./lint": "./dist/lint/index.js",
+    "./config": "./dist/config/index.js"
+  },
+  "types": "./index.d.ts",
+  "typesVersions": {
+    "*": {
+      "index.d.ts": [
+        "./dist/index.d.ts"
+      ],
+      "lint": [
+        "./dist/lint/index.d.ts"
+      ],
+      "config": [
+        "./dist/config/index.d.ts"
+      ],
+      "*": []
+    }
+  }
+}
