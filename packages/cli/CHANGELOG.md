@@ -1,6 +1,15 @@
 # @feature-lint/cli
 
+## 0.0.2
+
+### Patch Changes
+
+- 7ce28a9: Another test
+- Updated dependencies [7ce28a9]
+  - @feature-lint/core@0.0.2
+
 ## 0.0.1
+
 ### Patch Changes
 
 - 97fbc5c: Test changesets
