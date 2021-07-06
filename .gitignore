@@ -8,4 +8,6 @@ packages/*/dist
 
 .pnpm-debug.log
 
+.pnpm-store
+
 NOTES.md
