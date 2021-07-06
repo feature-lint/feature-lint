@@ -1,0 +1,96 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.parseDef = void 0;
+const array_1 = require("./parsers/array");
+const bigint_1 = require("./parsers/bigint");
+const boolean_1 = require("./parsers/boolean");
+const date_1 = require("./parsers/date");
+const enum_1 = require("./parsers/enum");
+const intersection_1 = require("./parsers/intersection");
+const literal_1 = require("./parsers/literal");
+const nativeEnum_1 = require("./parsers/nativeEnum");
+const null_1 = require("./parsers/null");
+const nullable_1 = require("./parsers/nullable");
+const number_1 = require("./parsers/number");
+const object_1 = require("./parsers/object");
+const record_1 = require("./parsers/record");
+const string_1 = require("./parsers/string");
+const tuple_1 = require("./parsers/tuple");
+const undefined_1 = require("./parsers/undefined");
+const union_1 = require("./parsers/union");
+function parseDef(schemaDef, path, visited) {
+    if (visited) {
+        const wasVisited = visited.find((x) => Object.is(x.def, schemaDef));
+        if (wasVisited) {
+            return { $ref: `#/${wasVisited.path.join('/')}` };
+        }
+        else {
+            visited.push({ def: schemaDef, path });
+        }
+    }
+    const def = schemaDef._def;
+    switch (schemaDef.constructor.name) {
+        case 'ZodString':
+            return string_1.parseStringDef(def);
+        case 'ZodNumber':
+            return number_1.parseNumberDef(def);
+        case 'ZodObject':
+            return object_1.parseObjectDef(def, path, visited);
+        case 'ZodBigInt':
+            return bigint_1.parseBigintDef(def);
+        case 'ZodBoolean':
+            return boolean_1.parseBooleanDef();
+        case 'ZodDate':
+            return date_1.parseDateDef();
+        case 'ZodUndefined':
+            return undefined_1.parseUndefinedDef();
+        case 'ZodNull':
+            return null_1.parseNullDef();
+        case 'ZodArray':
+            return array_1.parseArrayDef(def, path, visited);
+        case 'ZodNonEmptyArray':
+            return array_1.parseNonEmptyArrayDef(def, path, visited);
+        case 'ZodUnion':
+            return union_1.parseUnionDef(def, path, visited);
+        case 'ZodIntersection':
+            return intersection_1.parseIntersectionDef(def, path, visited);
+        case 'ZodTuple':
+            return tuple_1.parseTupleDef(def, path, visited);
+        case 'ZodRecord':
+            return record_1.parseRecordDef(def, path, visited);
+        case 'ZodLiteral':
+            return literal_1.parseLiteralDef(def);
+        case 'ZodEnum':
+            return enum_1.parseEnumDef(def);
+        case 'ZodNativeEnum':
+            return nativeEnum_1.parseNativeEnumDef(def);
+        case 'ZodNullable':
+            return nullable_1.parseNullable(def);
+        case 'ZodOptional':
+            return parseDef(def.innerType, path, visited);
+        case 'ZodDefault':
+            return parseDef(def.innerType, path, visited);
+        case 'ZodEffects':
+            return parseDef(def.schema, path, visited);
+        // // console.log('_def', _def);
+        // if (!_def.type) {
+        //   console.log('_def', _def);
+        // }
+        // return {
+        //   ..._def,
+        //   type: (_def.type || '') + ' (refinements)',
+        // };
+        case 'ZodAny':
+        case 'ZodUnknown':
+            return {};
+        case 'ZodFunction':
+        case 'ZodLazy':
+        case 'ZodPromise':
+        case 'ZodVoid':
+            return undefined;
+        default:
+            console.log(schemaDef.constructor.name);
+            return ((_) => undefined)(schemaDef);
+    }
+}
+exports.parseDef = parseDef;

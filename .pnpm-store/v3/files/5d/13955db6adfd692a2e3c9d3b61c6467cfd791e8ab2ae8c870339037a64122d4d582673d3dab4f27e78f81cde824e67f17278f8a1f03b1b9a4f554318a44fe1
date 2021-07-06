@@ -1,0 +1,27 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.parseIntersectionDef = void 0;
+const zod_1 = require("zod");
+const parseDef_1 = require("../parseDef");
+const object_1 = require("./object");
+function parseIntersectionDef(def, path, visited) {
+    const rightDef = def.right._def;
+    if (rightDef.t === zod_1.ZodParsedType.object) {
+        const right = object_1.parseObjectDef(rightDef, path, visited);
+        const leftDef = def.left._def;
+        if (leftDef.t === zod_1.ZodParsedType.object) {
+            const left = object_1.parseObjectDef(leftDef, path, visited);
+            return {
+                type: 'object',
+                properties: Object.assign(Object.assign({}, left.properties), right.properties),
+                required: [
+                    ...(left.required || []).filter((x) => !Object.keys(right.properties).includes(x)),
+                    ...(right.required || []),
+                ],
+            };
+        }
+        return right;
+    }
+    return parseDef_1.parseDef(rightDef, path, visited);
+}
+exports.parseIntersectionDef = parseIntersectionDef;

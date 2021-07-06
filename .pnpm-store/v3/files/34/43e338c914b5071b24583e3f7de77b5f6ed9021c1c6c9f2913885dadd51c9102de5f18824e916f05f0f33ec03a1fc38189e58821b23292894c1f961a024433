@@ -1,0 +1,6 @@
+import { ZodIntersectionDef, ZodTypeDef } from 'zod';
+import { JsonSchema7Type } from '../parseDef';
+export declare function parseIntersectionDef(def: ZodIntersectionDef, path: string[], visited: {
+    def: ZodTypeDef;
+    path: string[];
+}[]): JsonSchema7Type | undefined;

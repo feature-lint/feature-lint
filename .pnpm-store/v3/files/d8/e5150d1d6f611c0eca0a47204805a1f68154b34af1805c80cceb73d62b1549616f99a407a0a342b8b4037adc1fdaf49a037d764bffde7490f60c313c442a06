@@ -1,0 +1,6 @@
+import { ZodBigIntDef } from 'zod';
+import { JsonSchema7NumberType } from './number';
+export declare type JsonSchema7BigintType = JsonSchema7NumberType & {
+    type: 'integer';
+};
+export declare function parseBigintDef(def: ZodBigIntDef): JsonSchema7BigintType;

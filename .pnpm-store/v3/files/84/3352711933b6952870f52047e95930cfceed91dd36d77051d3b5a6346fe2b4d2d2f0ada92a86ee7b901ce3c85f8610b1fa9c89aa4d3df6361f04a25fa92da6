@@ -1,0 +1,16 @@
+import { ZodArrayDef, ZodNonEmptyArrayDef, ZodTypeDef } from 'zod';
+import { JsonSchema7Type } from '../parseDef';
+export declare type JsonSchema7ArrayType = {
+    type: 'array';
+    items?: JsonSchema7Type;
+    minItems?: number;
+    maxItems?: number;
+};
+export declare function parseArrayDef(def: ZodArrayDef | ZodNonEmptyArrayDef, path: string[], visited: {
+    def: ZodTypeDef;
+    path: string[];
+}[]): JsonSchema7ArrayType;
+export declare function parseNonEmptyArrayDef(def: ZodArrayDef | ZodNonEmptyArrayDef, path: string[], visited: {
+    def: ZodTypeDef;
+    path: string[];
+}[]): JsonSchema7ArrayType;

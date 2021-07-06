@@ -1,0 +1,7 @@
+import { ZodStringDef } from 'zod';
+export declare type JsonSchema7StringType = {
+    type: 'string';
+    minLength?: number;
+    maxLength?: number;
+};
+export declare function parseStringDef(def: ZodStringDef): JsonSchema7StringType;

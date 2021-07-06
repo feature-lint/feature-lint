@@ -1,0 +1,4 @@
+import { ZodOptionalDef } from 'zod';
+export declare function parseNullable(def: ZodOptionalDef): {
+    type: string[];
+};

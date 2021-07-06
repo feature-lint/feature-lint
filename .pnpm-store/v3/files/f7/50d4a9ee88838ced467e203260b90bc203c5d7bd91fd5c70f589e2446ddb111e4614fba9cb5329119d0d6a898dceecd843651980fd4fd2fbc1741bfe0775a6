@@ -1,0 +1,12 @@
+import { ZodTupleDef, ZodTypeDef } from 'zod';
+import { JsonSchema7Type } from '../parseDef';
+export declare type JsonSchema7TupleType = {
+    type: 'array';
+    minItems: number;
+    maxItems: number;
+    items: JsonSchema7Type[];
+};
+export declare function parseTupleDef(def: ZodTupleDef, path: string[], visited: {
+    def: ZodTypeDef;
+    path: string[];
+}[]): JsonSchema7TupleType;

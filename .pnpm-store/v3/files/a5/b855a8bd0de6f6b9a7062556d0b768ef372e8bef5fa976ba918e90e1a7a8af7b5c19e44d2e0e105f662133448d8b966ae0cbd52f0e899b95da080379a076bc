@@ -1,0 +1,40 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.parseNonEmptyArrayDef = exports.parseArrayDef = void 0;
+// import { ZodArrayDef } from 'zod/lib/src/types/array';
+const parseDef_1 = require("../parseDef");
+function parseArrayDef(def, path, visited) {
+    {
+        const res = {
+            type: 'array',
+            items: parseDef_1.parseDef(def.type, [...path, 'items'], visited),
+        };
+        // if(def.type._def)
+        if (def.minLength) {
+            res.minItems = def.minLength.value;
+        }
+        if (def.maxLength) {
+            res.maxItems = def.maxLength.value;
+        }
+        return res;
+    }
+}
+exports.parseArrayDef = parseArrayDef;
+function parseNonEmptyArrayDef(def, path, visited) {
+    {
+        const res = {
+            type: 'array',
+            items: parseDef_1.parseDef(def.type, [...path, 'items'], visited),
+            minItems: 1,
+        };
+        // if(def.type._def)
+        if (def.minLength) {
+            res.minItems = def.minLength.value;
+        }
+        if (def.maxLength) {
+            res.maxItems = def.maxLength.value;
+        }
+        return res;
+    }
+}
+exports.parseNonEmptyArrayDef = parseNonEmptyArrayDef;
