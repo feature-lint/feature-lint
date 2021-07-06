@@ -1,4 +1,4 @@
-name: Changesets
+name: Update versions / Publish packages
 on:
   push:
     branches:
@@ -30,5 +30,7 @@ jobs:
         with:
           commit: 'Update Versions'
           title: 'Update Versions'
+          publish: pnpm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
