@@ -1,5 +1,13 @@
 # @feature-lint/schema
 
+## 0.0.4
+
+### Patch Changes
+
+- d834914: Just a test
+- Updated dependencies [d834914]
+  - @feature-lint/core@0.0.4
+
 ## 0.0.3
 
 ### Patch Changes
