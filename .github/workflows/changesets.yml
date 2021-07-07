@@ -4,7 +4,7 @@ on:
     branches:
       - master
 jobs:
-  "Update versions / Publish packages":
+  updateVersionsOrPublishPackages:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
