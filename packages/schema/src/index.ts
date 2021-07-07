@@ -28,11 +28,11 @@ const featureLintConfigJsonSchema = JSON.stringify(
 fs.mkdirSync("./dist/schema", { recursive: true });
 
 writeFileSync(
-  `./dist/schema/${FEATURE_CONFIG_SCHEMA_FILE_NAME}-v${featureLintCoreVersion}`,
+  `./dist/schema/feature-v${featureLintCoreVersion}.schema.json`,
   featureConfigJsonSchema
 );
 
 writeFileSync(
-  `./dist/schema/${ROOT_CONFIG_SCHEMA_FILE_NAME}-v${featureLintCoreVersion}`,
+  `./dist/schema/feature-lint-v${featureLintCoreVersion}.schema.json`,
   featureLintConfigJsonSchema
 );
