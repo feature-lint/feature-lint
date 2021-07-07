@@ -1,5 +1,13 @@
 # @feature-lint/schema
 
+## 0.0.6
+
+### Patch Changes
+
+- ac8aed7: sdklfj
+- Updated dependencies [ac8aed7]
+  - @feature-lint/core@0.0.6
+
 ## 0.0.5
 
 ### Patch Changes

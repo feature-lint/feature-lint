@@ -1,5 +1,11 @@
 # @feature-lint/core
 
+## 0.0.6
+
+### Patch Changes
+
+- ac8aed7: sdklfj
+
 ## 0.0.5
 
 ### Patch Changes
