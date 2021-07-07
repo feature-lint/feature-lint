@@ -38,7 +38,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Deployment FeatureLint JSON Schema to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
-#         if: steps.changsets.outputs.published
+        if: steps.changsets.outputs.published
         with:
           branch: pages
           folder: packages/schema/dist/schema
