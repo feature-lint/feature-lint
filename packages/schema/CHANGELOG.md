@@ -1,5 +1,15 @@
 # @feature-lint/schema
 
+## 0.0.8
+
+### Patch Changes
+
+- 0f396e8: sdf
+- 014835a: sfd
+- Updated dependencies [0f396e8]
+- Updated dependencies [014835a]
+  - @feature-lint/core@0.0.8
+
 ## 0.0.7
 
 ### Patch Changes

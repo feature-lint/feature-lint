@@ -1,5 +1,12 @@
 # @feature-lint/core
 
+## 0.0.8
+
+### Patch Changes
+
+- 0f396e8: sdf
+- 014835a: sfd
+
 ## 0.0.7
 
 ### Patch Changes
