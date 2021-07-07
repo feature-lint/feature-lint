@@ -47,4 +47,5 @@ jobs:
           target-folder: schema
           single-commit: true
           commit-message: Update pages
+          clean: false
           
