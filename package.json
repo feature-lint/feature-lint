@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "pnpm recursive run build",
-    "publish-packages": "pnpm run build && pnpm recursive publish --access public",
+    "publish-packages": "pnpm run build && changeset publish",
     "version-packages": "changeset version && pnpm install --lockfile-only"
   },
   "author": "Renke Grunwald <renke@renke.org>",
