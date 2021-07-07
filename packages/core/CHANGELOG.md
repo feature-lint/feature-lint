@@ -1,5 +1,11 @@
 # @feature-lint/core
 
+## 0.0.5
+
+### Patch Changes
+
+- 279e09f: another test
+
 ## 0.0.4
 
 ### Patch Changes
