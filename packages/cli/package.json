@@ -1,6 +1,6 @@
 {
   "name": "@feature-lint/cli",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
   "author": "Renke Grunwald <renke@renke.org>",
   "license": "ISC",
   "dependencies": {
-    "@feature-lint/core": "workspace:^0.0.4"
+    "@feature-lint/core": "workspace:^0.0.5"
   },
   "devDependencies": {
     "@types/node": "^15.12.2",

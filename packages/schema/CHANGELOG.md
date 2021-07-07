@@ -1,5 +1,13 @@
 # @feature-lint/schema
 
+## 0.0.5
+
+### Patch Changes
+
+- 279e09f: another test
+- Updated dependencies [279e09f]
+  - @feature-lint/core@0.0.5
+
 ## 0.0.4
 
 ### Patch Changes

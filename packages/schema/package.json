@@ -1,7 +1,7 @@
 {
   "name": "@feature-lint/schema",
   "private": true,
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
   "author": "Renke Grunwald <renke@renke.org>",
   "license": "ISC",
   "dependencies": {
-    "@feature-lint/core": "workspace:^0.0.4",
+    "@feature-lint/core": "workspace:^0.0.5",
     "zod-to-json-schema": "file:../../vendor/zod-to-json-schema-0.6.2.tgz"
   },
   "type": "module"
