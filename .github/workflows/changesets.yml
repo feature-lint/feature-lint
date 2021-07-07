@@ -26,7 +26,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Update versions / Publish packages
-        id: "changsets"
+        id: changesets
         uses: changesets/action@master
         with:
           commit: "Update package versions"
@@ -38,7 +38,8 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Deployment FeatureLint JSON Schema to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
-        if: steps.changsets.outputs.published
+#         if: steps.changesets.outputs.published
+        if: steps.changesets.outputs.published == true
         with:
           branch: pages
           folder: packages/schema/dist/schema
