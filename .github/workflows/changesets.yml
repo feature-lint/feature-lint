@@ -41,8 +41,8 @@ jobs:
 #         if: steps.changsets.outputs.published
         with:
           branch: pages
-          folder: packages/schema/dist/schemas
-          target-folder: schemas
+          folder: packages/schema/dist/schema
+          target-folder: schema
           single-commit: true
           commit-message: Update pages
           
