@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:watch": "tsc --watch",
-    "build": "tsc"
+    "build": "tsc && node ./dist/index.js"
   },
   "author": "Renke Grunwald <renke@renke.org>",
   "license": "ISC",
