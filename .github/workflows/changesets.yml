@@ -4,7 +4,7 @@ on:
     branches:
       - master
 jobs:
-  version:
+  "Update versions / Publish packages":
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
@@ -26,6 +26,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Update versions / Publish packages
+        id: "changsets"
         uses: changesets/action@master
         with:
           commit: "Update package versions"
@@ -35,3 +36,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Deployment FeatureLint JSON Schema to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+#         if: steps.changsets.outputs.published
+        with:
+          branch: pages
+          folder: packages/schema/dist/schemas
+          target-folder: schemas
+          single-commit: true
+          commit-message: Update pages
+          
