@@ -1,5 +1,11 @@
 # @feature-lint/core
 
+## 0.0.7
+
+### Patch Changes
+
+- 8871b3e: skdjf
+
 ## 0.0.6
 
 ### Patch Changes
