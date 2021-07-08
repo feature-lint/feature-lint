@@ -3,8 +3,8 @@
   "version": "0.0.8",
   "description": "",
   "scripts": {
-    "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules --no-warnings\" jest",
-    "test:watch": "cross-env NODE_OPTIONS=\"--experimental-vm-modules --no-warnings\" jest --watch",
+    "test": "NODE_OPTIONS=\"--experimental-vm-modules --no-warnings\" jest",
+    "test:watch": "NODE_OPTIONS=\"--experimental-vm-modules --no-warnings\" jest --watch",
     "build": "tsc",
     "build:watch": "tsc --watch"
   },

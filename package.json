@@ -5,8 +5,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "pnpm recursive run build",
+    "build": "pnpm recursive run build --filter ./packages",
+    "build:ci": "CI=true pnpm run build",
+    "test": "pnpm recursive test --filter ./packages --no-bail",
+    "test:ci": "CI=true pnpm run test",
     "publish-packages": "pnpm run build && changeset publish",
     "version-packages": "changeset version && pnpm install --lockfile-only"
   },
