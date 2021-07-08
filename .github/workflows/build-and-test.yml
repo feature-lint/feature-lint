@@ -21,6 +21,8 @@ jobs:
           node-version: ${{ matrix.node }}
       - name: Install pnpm
         run: npm i pnpm@latest -g
+      - name: Install dependencies
+        run: pnpm install        
       - name: Build packages
         run: pnpm run build:ci
       - name: Test packages
