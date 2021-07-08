@@ -6,6 +6,7 @@ on:
     branches: [ master ]
 jobs:
   buildAndTest:
+    name: Build and test (Node.js v${{ matrix.node-version }})
     timeout-minutes: 15
     runs-on: ubuntu-latest
     strategy:
