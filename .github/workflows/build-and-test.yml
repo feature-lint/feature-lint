@@ -4,15 +4,13 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-
-  workflow_dispatch:    
 jobs:
   buildAndTest:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [14, 16]
+        node: [14, 16]        
     steps:
       - uses: actions/checkout@v2      
       - name: Install Node.js
