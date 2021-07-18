@@ -1,5 +1,5 @@
-import { ResolvedModule } from "../resolve/model/ResolvedModule";
-import { ResolveState } from "../resolve/model/ResolveState";
+import { ResolvedModule } from "../model/ResolvedModule";
+import { ResolveState } from "../model/ResolveState";
 
 export function getResolvedModule(
   resolveState: ResolveState,

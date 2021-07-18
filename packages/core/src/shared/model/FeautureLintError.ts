@@ -1,7 +1,7 @@
 import { Chalk } from "chalk";
 import { ZodError } from "zod";
-import { Printer } from "../../printer/Printer.js";
-import { printGenericViolationTemplate } from "../../render/printViolationTemplate.js";
+import { Printer } from "../../printer/service/Printer.js";
+import { printViolationLikeTemplate } from "../print/printViolationLikeTemplate";
 
 export interface FeatureLintError {
   type: string;
@@ -17,7 +17,7 @@ export const GenericFeatureLintError = (
     type: "generic",
 
     print(printer) {
-      return printGenericViolationTemplate(printer, name, message, () => {});
+      return printViolationLikeTemplate(printer, name, message, () => {});
     },
   };
 };
@@ -29,7 +29,7 @@ export const UnexpectedFeatureLintError = (
     type: "generic",
 
     print(printer) {
-      return printGenericViolationTemplate(
+      return printViolationLikeTemplate(
         printer,
         "unexpected-error",
         message,
@@ -48,7 +48,7 @@ export const ZodFeatureLintError = (
     type: "zod",
 
     print(printer) {
-      printGenericViolationTemplate(printer, name, message, () => {
+      printViolationLikeTemplate(printer, name, message, () => {
         // TODO: Make this more useful
         const errors = zodError.flatten();
 

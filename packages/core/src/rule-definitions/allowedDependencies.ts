@@ -4,12 +4,12 @@ import { z } from "zod";
 import { BuildingBlockName } from "../config/model/BuildingBlockName.js";
 import { FeatureName } from "../config/model/FeatureName.js";
 import { FeatureTypeName } from "../config/model/FeatureTypeName.js";
-import { printViolationTemplate } from "../render/printViolationTemplate.js";
+import { printViolationTemplate } from "../rule/print/printViolationTemplate.js";
 import { ResolvedBuildingBlockModule } from "../resolve/model/ResolvedModule.js";
 import { ResolveState } from "../resolve/model/ResolveState.js";
-import { BuildingBlockModuleRuleDefinition } from "../rule-registry/ruleDefinition.js";
-import { RuleScope } from "../rule-registry/RuleScope.js";
-import { Violation } from "../violation/model/Violation.js";
+import { BuildingBlockModuleRuleDefinition } from "../rule/model/RuleDefinition.js";
+import { RuleScope } from "../rule/model/RuleScope.js";
+import { Violation } from "../rule/model/Violation.js";
 
 export type AllowedDependencyType = "featureType" | "feature" | "buildingBlock";
 
@@ -82,13 +82,6 @@ export const AllowedDependenciesRuleConfig = z.object({
 export type AllowedDependenciesRuleConfig = z.infer<
   typeof AllowedDependenciesRuleConfig
 >;
-
-export interface RuleByScopeName<RULE> {
-  root: RULE | undefined;
-  featureType: RULE | undefined;
-  feature: RULE | undefined;
-  buildingBlock: RULE | undefined;
-}
 
 export type ViolationStatus = "allowed" | "notAllowed" | "alwaysAllowed";
 
@@ -226,9 +219,9 @@ export const evaluate = (
       }
 
       const violation: Violation<AllowedDependenciesViolationData> = {
-        name: rule.name,
+        ruleName: rule.name,
 
-        scope: ruleScope,
+        ruleScope: ruleScope,
 
         severity: "error",
 
@@ -276,7 +269,7 @@ export const allowedDependencyRuleDefinition: BuildingBlockModuleRuleDefinition<
     const dependencyFeatureTypeName = dependencyFeature.featureTypeName;
 
     const renderDependentMessagePart = () => {
-      switch (violation.scope) {
+      switch (violation.ruleScope) {
         case "root": {
           throw new Error("Not supported");
         }

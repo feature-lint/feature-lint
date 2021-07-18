@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { FeatureConfig } from "./model/FeatureConfig.js";
+import { FeatureConfig } from "../model/FeatureConfig.js";
 import { parse as parseJsonc } from "jsonc-parser";
 
 export function readFeatureConfig(

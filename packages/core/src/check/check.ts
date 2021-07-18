@@ -1,29 +1,13 @@
-import { FeatureTypeConfig } from "../config/model/FeatureTypeConfig.js";
+import { getRuleDefinitionByNameAndType } from "../registry/ruleRegistry.js";
 import { ResolvedBuildingBlock } from "../resolve/model/ResolvedBuildingBlock.js";
 import { ResolvedFeature } from "../resolve/model/ResolvedFeature.js";
 import { ResolvedBuildingBlockModule } from "../resolve/model/ResolvedModule.js";
 import { ResolveState } from "../resolve/model/ResolveState.js";
-import {
-  BuildingBlockModuleRuleDefinition,
-  RuleDefinitionType,
-} from "../rule-registry/ruleDefinition.js";
-import {
-  getRuleDefinitionByNameAndType,
-  IMPLICIT_RULE_DEFINITIONS,
-  RULE_DEFINITIONS,
-} from "../rule-registry/ruleRegistry.js";
-import { RuleScope } from "../rule-registry/RuleScope.js";
-import { Violation } from "../violation/model/Violation.js";
-import { getResolvedBuildingBlock } from "./getResolvedBuildingBlock.js";
-import { getResolvedFeature } from "./getResolvedFeature.js";
-import { getResolvedModule } from "./getResolvedModule.js";
-
-export const buildUniqueFeatureTypeName = (
-  featureName: string,
-  featureTypeName: string
-) => {
-  return `${featureName}:${featureTypeName}`;
-};
+import { getResolvedBuildingBlock } from "../resolve/operations/getResolvedBuildingBlock.js";
+import { getResolvedFeature } from "../resolve/operations/getResolvedFeature.js";
+import { getResolvedModule } from "../resolve/operations/getResolvedModule.js";
+import { RuleScope } from "../rule/model/RuleScope.js";
+import { Violation } from "../rule/model/Violation.js";
 
 export function check(resolveState: ResolveState): void {
   const checkFeature = (feature: ResolvedFeature) => {

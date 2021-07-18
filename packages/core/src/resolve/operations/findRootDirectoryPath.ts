@@ -1,13 +1,13 @@
 import * as fs from "fs";
 import * as path from "path";
-import { FeatureLintConfig } from "../config/model/FeatureLintConfig.js";
+import { FeatureLintConfig } from "../../config/model/FeatureLintConfig.js";
 import {
   FeatureLintError,
   GenericFeatureLintError,
   UnexpectedFeatureLintError,
-} from "../shared/model/FeautureLintError.js";
-import { Failure, Result, Success } from "../shared/util/Result.js";
-import { isSubPath } from "./util/isSubPath.js";
+} from "../../shared/model/FeautureLintError.js";
+import { Failure, Result, Success } from "../../shared/util/Result.js";
+import { isSubPath } from "../util/isSubPath.js";
 
 export function findRootDirectoryPath(
   featureLintConfig: FeatureLintConfig,

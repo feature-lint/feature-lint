@@ -1,11 +1,11 @@
 import chalk from "chalk";
 import { check } from "../check/check.js";
-import { findFeatureLintConfigFilePath } from "../config/findFeatureLintConfigFilePath.js";
-import { readFeatureLintConfig } from "../config/readFeatureLintConfig.js";
-import { Printer } from "../printer/Printer.js";
-import { VIOLATION_PRINTER } from "../render/violationPrinterRegistry.js";
-import { buildFeatureNameHierarchy } from "../resolve/buildFeatureNameHierarchy.js";
-import { findRootDirectoryPath } from "../resolve/findRootDirectoryPath.js";
+import { findFeatureLintConfigFilePath } from "../config/operations/findFeatureLintConfigFilePath.js";
+import { readFeatureLintConfig } from "../config/operations/readFeatureLintConfig.js";
+import { Printer } from "../printer/service/Printer.js";
+import { VIOLATION_PRINTER } from "../registry/violationPrinterRegistry.js";
+import { buildFeatureNameHierarchy } from "../resolve/operations/buildFeatureNameHierarchy.js";
+import { findRootDirectoryPath } from "../resolve/operations/findRootDirectoryPath.js";
 import { ResolvedFeature } from "../resolve/model/ResolvedFeature.js";
 import { ResolveState } from "../resolve/model/ResolveState.js";
 import { resolve } from "../resolve/resolve.js";
@@ -15,7 +15,7 @@ import {
   UnexpectedFeatureLintError,
 } from "../shared/model/FeautureLintError.js";
 import { Failure, Result, Success } from "../shared/util/Result.js";
-import { walkFeatures } from "./walkFeatures.js";
+import { walkFeatures } from "./operations/walkFeatures.js";
 
 interface LintState {
   resolveState: ResolveState;
@@ -148,11 +148,11 @@ const render = (lintState: LintState) => {
       printFeatureHeader(feature, featureViolationsCount);
 
       for (const violation of feature.violations) {
-        const violationPrinter = VIOLATION_PRINTER[violation.name];
+        const violationPrinter = VIOLATION_PRINTER[violation.ruleName];
 
         if (violationPrinter === undefined) {
           throw new Error(
-            `Violation printer not found for violation ${violation.name}`
+            `Violation printer not found for violation ${violation.ruleName}`
           );
         }
 

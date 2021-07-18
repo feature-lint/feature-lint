@@ -1,9 +1,9 @@
-import { ViolationPrinter } from "../render/ViolationPrinter.js";
-import { ResolvedBuildingBlock } from "../resolve/model/ResolvedBuildingBlock.js";
-import { ResolvedFeature } from "../resolve/model/ResolvedFeature.js";
-import { ResolvedBuildingBlockModule } from "../resolve/model/ResolvedModule.js";
-import { ResolveState } from "../resolve/model/ResolveState.js";
-import { Violation } from "../violation/model/Violation.js";
+import { ViolationPrinter } from "./ViolationPrinter.js";
+import { ResolvedBuildingBlock } from "../../resolve/model/ResolvedBuildingBlock.js";
+import { ResolvedFeature } from "../../resolve/model/ResolvedFeature.js";
+import { ResolvedBuildingBlockModule } from "../../resolve/model/ResolvedModule.js";
+import { ResolveState } from "../../resolve/model/ResolveState.js";
+import { Violation } from "./Violation.js";
 import { RuleScope } from "./RuleScope.js";
 
 export type RuleDefinitionType =

@@ -1,10 +1,5 @@
-import {
-  IMPLICIT_RULE_DEFINITIONS,
-  RULE_DEFINITIONS,
-} from "../rule-registry/ruleRegistry.js";
-import { Violation } from "../violation/model/Violation.js";
-import { printViolationTemplate } from "./printViolationTemplate.js";
-import { ViolationPrinter } from "./ViolationPrinter.js";
+import { ViolationPrinter } from "../rule/model/ViolationPrinter.js";
+import { IMPLICIT_RULE_DEFINITIONS, RULE_DEFINITIONS } from "./ruleRegistry.js";
 
 const ruleViolationPrinters = Object.fromEntries(
   RULE_DEFINITIONS.map((rule) => {

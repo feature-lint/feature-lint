@@ -1,5 +1,5 @@
-import { ResolvedBuildingBlock } from "./model/ResolvedBuildingBlock.js";
-import { ResolvedFeature } from "./model/ResolvedFeature.js";
+import { ResolvedBuildingBlock } from "../model/ResolvedBuildingBlock.js";
+import { ResolvedFeature } from "../model/ResolvedFeature.js";
 
 export function buildUniqueBuildingBlockName(
   featureName: ResolvedFeature["name"],

@@ -1,12 +1,12 @@
-import { getResolvedFeature } from "../check/getResolvedFeature.js";
+import { getResolvedFeature } from "../resolve/operations/getResolvedFeature.js";
 import { BuildingBlockName } from "../config/model/BuildingBlockName.js";
-import { printViolationTemplate } from "../render/printViolationTemplate.js";
-import { ViolationPrinter } from "../render/ViolationPrinter.js";
+import { printViolationTemplate } from "../rule/print/printViolationTemplate.js";
+import { ViolationPrinter } from "../rule/model/ViolationPrinter.js";
 import {
   BuildingBlockRuleDefinition,
   FeatureRuleDefinition,
-} from "../rule-registry/ruleDefinition.js";
-import { Violation } from "../violation/model/Violation.js";
+} from "../rule/model/RuleDefinition.js";
+import { Violation } from "../rule/model/Violation.js";
 import { checkMissingFeatureType } from "./noMissingFeatureTypes.js";
 import { checkUnknownFeatureType } from "./noUnknownFeatureTypes.js";
 
@@ -20,9 +20,9 @@ export const createNoUnknownBuildingBlockViolation = (
   unknownBuildingBlockName: string
 ): Violation<NoUnknownBuildingBlocksViolationData> => {
   return {
-    name: "no-unknown-building-blocks",
+    ruleName: "no-unknown-building-blocks",
     severity: "error",
-    scope: "feature",
+    ruleScope: "feature",
     data: {
       featureName,
       unknownBuildingBlockName,

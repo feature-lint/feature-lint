@@ -2,11 +2,14 @@ import "zod";
 import {
   AllowedDependenciesRuleConfig,
   allowedDependencyRuleDefinition,
-} from "../rules/allowedDependencies.js";
-import { noMissingFeatureTypesRuleDefinition } from "../rules/noMissingFeatureTypes.js";
-import { noUnknownBuildingBlocksRuleDefinition } from "../rules/noUnknownBuildingBlocks.js";
-import { noUnknownFeatureTypesRuleDefinition } from "../rules/noUnknownFeatureTypes.js";
-import { RuleDefinition, RuleDefinitionType } from "./ruleDefinition.js";
+} from "../rule-definitions/allowedDependencies.js";
+import { noMissingFeatureTypesRuleDefinition } from "../rule-definitions/noMissingFeatureTypes.js";
+import { noUnknownBuildingBlocksRuleDefinition } from "../rule-definitions/noUnknownBuildingBlocks.js";
+import { noUnknownFeatureTypesRuleDefinition } from "../rule-definitions/noUnknownFeatureTypes.js";
+import {
+  RuleDefinition,
+  RuleDefinitionType,
+} from "../rule/model/RuleDefinition.js";
 
 export const FEATURE_TYPE_CONFIG_RULE_SCHEMA = AllowedDependenciesRuleConfig;
 

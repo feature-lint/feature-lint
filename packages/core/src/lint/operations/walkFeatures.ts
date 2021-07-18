@@ -1,5 +1,5 @@
-import { ResolvedFeature } from "../resolve/model/ResolvedFeature.js";
-import { ResolveState } from "../resolve/model/ResolveState.js";
+import { ResolvedFeature } from "../../resolve/model/ResolvedFeature.js";
+import { ResolveState } from "../../resolve/model/ResolveState.js";
 
 export function walkFeatures(
   resolveState: ResolveState,

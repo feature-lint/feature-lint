@@ -1,5 +1,5 @@
-import { buildUniqueBuildingBlockName } from "../resolve/buildUniqueBuildingBlockName.js";
-import { ResolveState } from "../resolve/model/ResolveState.js";
+import { buildUniqueBuildingBlockName } from "./buildUniqueBuildingBlockName.js";
+import { ResolveState } from "../model/ResolveState.js";
 
 export function getResolvedBuildingBlock(
   resolveState: ResolveState,

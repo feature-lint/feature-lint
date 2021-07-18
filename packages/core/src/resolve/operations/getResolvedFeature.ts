@@ -1,5 +1,5 @@
-import { ResolvedFeature } from "../resolve/model/ResolvedFeature";
-import { ResolveState } from "../resolve/model/ResolveState";
+import { ResolvedFeature } from "../model/ResolvedFeature";
+import { ResolveState } from "../model/ResolveState";
 
 export function getResolvedFeature(
   resolveState: ResolveState,

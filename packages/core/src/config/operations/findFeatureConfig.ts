@@ -1,4 +1,4 @@
-import { FeatureConfig } from "./model/FeatureConfig.js";
+import { FeatureConfig } from "../model/FeatureConfig.js";
 import { readFeatureConfig } from "./readFeatureConfig.js";
 import { findFeatureConfigFilePath } from "./findFeatureConfigFilePath.js";
 

@@ -1,9 +1,9 @@
-import { printViolationTemplate } from "../render/printViolationTemplate.js";
-import { ViolationPrinter } from "../render/ViolationPrinter.js";
+import { printViolationTemplate } from "../rule/print/printViolationTemplate.js";
+import { ViolationPrinter } from "../rule/model/ViolationPrinter.js";
 import { ResolvedFeature } from "../resolve/model/ResolvedFeature.js";
 import { ResolveState } from "../resolve/model/ResolveState.js";
-import { FeatureRuleDefinition } from "../rule-registry/ruleDefinition.js";
-import { Violation } from "../violation/model/Violation.js";
+import { FeatureRuleDefinition } from "../rule/model/RuleDefinition.js";
+import { Violation } from "../rule/model/Violation.js";
 
 export interface NoUnknownFeatureTypesViolationData {
   featureName: string;
@@ -15,9 +15,9 @@ export const createNoUnknownFeatureTypeViolation = (
   unknownFeatureTypeName: string
 ): Violation<NoUnknownFeatureTypesViolationData> => {
   return {
-    name: "no-unknown-feature-types",
+    ruleName: "no-unknown-feature-types",
     severity: "error",
-    scope: "feature",
+    ruleScope: "feature",
     data: {
       featureName,
       unknownFeatureTypeName,

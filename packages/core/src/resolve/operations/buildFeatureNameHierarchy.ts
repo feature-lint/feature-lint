@@ -1,4 +1,4 @@
-import { ResolveState } from "./model/ResolveState.js";
+import { ResolveState } from "../model/ResolveState.js";
 
 export function buildFeatureNameHierarchy(
   featureName: string,
