@@ -1,11 +1,11 @@
 import { ResolvedModule } from "../model/ResolvedModule";
-import { ResolveState } from "../model/ResolveState";
+import { ResolveResult } from "../model/ResolveResult";
 
 export function getResolvedModule(
-  resolveState: ResolveState,
+  resolveResult: ResolveResult,
   moduleFilePath: string
 ): ResolvedModule {
-  const module = resolveState.resolvedModuleByFilePath.get(moduleFilePath);
+  const module = resolveResult.resolvedModuleByFilePath.get(moduleFilePath);
 
   if (module === undefined) {
     throw new Error("Module not found");

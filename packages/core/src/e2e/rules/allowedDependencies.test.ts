@@ -3,7 +3,7 @@ import { URL } from "url";
 import { lint } from "../../lint/lint.js";
 
 describe("allowedDependencies", () => {
-  it("featureTypeDependency", () => {
+  it("feature-type", () => {
     const testFilePath = new URL(import.meta.url).pathname;
 
     const fixtureDirectoryPath = path.resolve(
@@ -14,7 +14,7 @@ describe("allowedDependencies", () => {
     lint(fixtureDirectoryPath);
   });
 
-  it("featureDependency", () => {
+  it("feature", () => {
     const testFilePath = new URL(import.meta.url).pathname;
 
     const fixtureDirectoryPath = path.resolve(
@@ -25,7 +25,7 @@ describe("allowedDependencies", () => {
     lint(fixtureDirectoryPath);
   });
 
-  it("buildingBlock", () => {
+  it("building-block", () => {
     const testFilePath = new URL(import.meta.url).pathname;
 
     const fixtureDirectoryPath = path.resolve(

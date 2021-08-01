@@ -2,7 +2,7 @@ import { ViolationPrinter } from "./ViolationPrinter.js";
 import { ResolvedBuildingBlock } from "../../resolve/model/ResolvedBuildingBlock.js";
 import { ResolvedFeature } from "../../resolve/model/ResolvedFeature.js";
 import { ResolvedBuildingBlockModule } from "../../resolve/model/ResolvedModule.js";
-import { ResolveState } from "../../resolve/model/ResolveState.js";
+import { ResolveResult } from "../../resolve/model/ResolveResult.js";
 import { Violation } from "./Violation.js";
 import { RuleScope } from "./RuleScope.js";
 
@@ -31,7 +31,7 @@ export interface BuildingBlockModuleRuleDefinition<RULE_CONFIG, VIOLATION_DATA>
   evaluate: (
     ruleScope: RuleScope,
     ruleConfig: RULE_CONFIG,
-    resolveState: ResolveState,
+    resolveResult: ResolveResult,
     module: ResolvedBuildingBlockModule
   ) => Violation<VIOLATION_DATA>[];
 }
@@ -42,7 +42,7 @@ export interface FeatureRuleDefinition<RULE_CONFIG, VIOLATION_DATA>
 
   evaluate: (
     ruleConfig: RULE_CONFIG,
-    resolveState: ResolveState,
+    resolveResult: ResolveResult,
     feature: ResolvedFeature
   ) => Violation<VIOLATION_DATA>[];
 }
@@ -53,7 +53,7 @@ export interface BuildingBlockRuleDefinition<RULE_CONFIG, VIOLATION_DATA>
 
   evaluate: (
     ruleConfig: RULE_CONFIG,
-    resolveState: ResolveState,
+    resolveResult: ResolveResult,
     buildingBlock: ResolvedBuildingBlock
   ) => Violation<VIOLATION_DATA>[];
 }

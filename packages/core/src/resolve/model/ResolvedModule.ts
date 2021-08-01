@@ -2,14 +2,24 @@ import ts from "typescript";
 
 export type ResolvedModule =
   | ResolvedFeatureModule
-  | ResolvedBuildingBlockModule;
+  | ResolvedBuildingBlockModule
+  | ResolvedRootModule;
+
+export type ResolvedModuleType =
+  | "rootModule"
+  | "featureModule"
+  | "buildingBlockModule";
 
 interface DependencyModuleInfo {
-  tsImportDeclaration: ts.ImportDeclaration;
+  tsImportOrExportDeclaration: ts.ImportDeclaration | ts.ExportDeclaration;
 }
 
 interface CommonResolvedModule {
+  thingyType: "module";
+
   // name: string | undefined;
+  type: ResolvedModuleType;
+
   filePath: string;
 
   tsSourceFile: ts.SourceFile;
@@ -19,6 +29,24 @@ interface CommonResolvedModule {
   dependencyModuleInfoByFilePath: Map<string, DependencyModuleInfo>;
 
   dependentModuleFilesPaths: Set<string>;
+
+  buildingBlockPrivate: boolean;
+
+  featurePrivate: boolean;
+
+  /**
+   * It contains a Feature name.
+   */
+  parentFeaturePrivate: string | undefined;
+
+  /**
+   * It contains a Feature name.
+   */
+  siblingFeaturePrivate: string | undefined;
+}
+
+export interface ResolvedRootModule extends CommonResolvedModule {
+  type: "rootModule";
 }
 
 export interface ResolvedFeatureModule extends CommonResolvedModule {

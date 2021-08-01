@@ -31,7 +31,7 @@ export const createNoUnknownBuildingBlockViolation = (
 };
 
 const noUnknownBuildingBlocksViolationPrinter: ViolationPrinter<NoUnknownBuildingBlocksViolationData> =
-  (printer, violation, resolveState) => {
+  (printer, violation, resolveResult) => {
     const { featureName, unknownBuildingBlockName } = violation.data;
 
     printViolationTemplate(
@@ -40,7 +40,7 @@ const noUnknownBuildingBlocksViolationPrinter: ViolationPrinter<NoUnknownBuildin
       printer.format`Feature {bold ${featureName}} contains unknown building block {bold ${unknownBuildingBlockName}}`,
       () => {
         const knownBuildingBlocks = getResolvedFeature(
-          resolveState,
+          resolveResult,
           featureName
         )
           .featureTypeConfig.buildingBlocks.map((buildingBlock) => {
@@ -64,13 +64,13 @@ export const noUnknownBuildingBlocksRuleDefinition: BuildingBlockRuleDefinition<
 
   type: "buildingBlock",
 
-  evaluate: (ruleConfig, resolveState, resolvedBuildingBlock) => {
+  evaluate: (ruleConfig, resolveResult, resolvedBuildingBlock) => {
     const resolvedFeature = getResolvedFeature(
-      resolveState,
+      resolveResult,
       resolvedBuildingBlock.featureName
     );
 
-    if (checkUnknownFeatureType(resolveState, resolvedFeature)) {
+    if (checkUnknownFeatureType(resolveResult, resolvedFeature)) {
       return [];
     }
 

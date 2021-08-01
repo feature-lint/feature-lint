@@ -1,7 +1,7 @@
 import { printViolationTemplate } from "../rule/print/printViolationTemplate.js";
 import { ViolationPrinter } from "../rule/model/ViolationPrinter.js";
 import { ResolvedFeature } from "../resolve/model/ResolvedFeature.js";
-import { ResolveState } from "../resolve/model/ResolveState.js";
+import { ResolveResult } from "../resolve/model/ResolveResult.js";
 import { FeatureRuleDefinition } from "../rule/model/RuleDefinition.js";
 import { Violation } from "../rule/model/Violation.js";
 
@@ -26,7 +26,7 @@ export const createNoUnknownFeatureTypeViolation = (
 };
 
 const noUnknownFeatureTypesViolationPrinter: ViolationPrinter<NoUnknownFeatureTypesViolationData> =
-  (printer, violation, resolveState) => {
+  (printer, violation, resolveResult) => {
     const { featureName, unknownFeatureTypeName } = violation.data;
 
     printViolationTemplate(
@@ -35,7 +35,7 @@ const noUnknownFeatureTypesViolationPrinter: ViolationPrinter<NoUnknownFeatureTy
       printer.format`Feature {bold ${featureName}} has unknown feature type {bold ${unknownFeatureTypeName}}`,
       () => {
         const allFeatureTypesText =
-          resolveState.resolvedRoot.config.featureTypes
+          resolveResult.resolvedRoot.config.featureTypes
             .map((featureType) => {
               return printer.format`{bold ${featureType.name}}`;
             })
@@ -49,14 +49,14 @@ const noUnknownFeatureTypesViolationPrinter: ViolationPrinter<NoUnknownFeatureTy
   };
 
 export const checkUnknownFeatureType = (
-  resolveState: ResolveState,
+  resolveResult: ResolveResult,
   resolvedFeature: ResolvedFeature
 ): boolean => {
   if (resolvedFeature.featureTypeName === undefined) {
     return false;
   }
 
-  const known = resolveState.resolvedRoot.config.featureTypes.find(
+  const known = resolveResult.resolvedRoot.config.featureTypes.find(
     (featureType) => {
       return featureType.name === resolvedFeature.featureTypeName;
     }
@@ -73,8 +73,8 @@ export const noUnknownFeatureTypesRuleDefinition: FeatureRuleDefinition<
 
   type: "feature",
 
-  evaluate: (ruleConfig, resolveState, resolvedFeature) => {
-    if (!checkUnknownFeatureType(resolveState, resolvedFeature)) {
+  evaluate: (ruleConfig, resolveResult, resolvedFeature) => {
+    if (!checkUnknownFeatureType(resolveResult, resolvedFeature)) {
       return [];
     }
 

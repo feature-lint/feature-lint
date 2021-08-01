@@ -1,8 +1,8 @@
 import { ResolvedFeature } from "../../resolve/model/ResolvedFeature.js";
-import { ResolveState } from "../../resolve/model/ResolveState.js";
+import { ResolveResult } from "../../resolve/model/ResolveResult.js";
 
 export function walkFeatures(
-  resolveState: ResolveState,
+  resolveResult: ResolveResult,
   featureHandler: (resolvedFeature: ResolvedFeature) => void
 ) {
   const walk = (feature: ResolvedFeature) => {
@@ -12,16 +12,16 @@ export function walkFeatures(
 
     for (const childFeatureName of childFeatureNames) {
       const childFeature =
-        resolveState.resolvedFeatureByName.get(childFeatureName)!;
+        resolveResult.resolvedFeatureByName.get(childFeatureName)!;
 
       walk(childFeature);
     }
   };
 
   for (const featureName of [
-    ...resolveState.resolvedRoot.featureNames,
+    ...resolveResult.resolvedRoot.featureNames,
   ].sort()) {
-    const feature = resolveState.resolvedFeatureByName.get(featureName)!;
+    const feature = resolveResult.resolvedFeatureByName.get(featureName)!;
 
     walk(feature);
   }

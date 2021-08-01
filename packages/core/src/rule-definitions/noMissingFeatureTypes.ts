@@ -22,7 +22,7 @@ export const createNoMissingFeatureTypesViolation = (
 };
 
 const noMissingFeatureTypesViolationPrinter: ViolationPrinter<NoMissingFeatureTypesViolationData> =
-  (printer, violation, resolveState) => {
+  (printer, violation, resolveResult) => {
     const { featureName } = violation.data;
 
     printViolationTemplate(
@@ -31,7 +31,7 @@ const noMissingFeatureTypesViolationPrinter: ViolationPrinter<NoMissingFeatureTy
       printer.format`Feature {bold ${featureName}} has {bold no} feature type`,
       () => {
         const allFeatureTypesText =
-          resolveState.resolvedRoot.config.featureTypes
+          resolveResult.resolvedRoot.config.featureTypes
             .map((featureType) => {
               return printer.format`{bold ${featureType.name}}`;
             })
@@ -58,7 +58,7 @@ export const noMissingFeatureTypesRuleDefinition: FeatureRuleDefinition<
 
   type: "feature",
 
-  evaluate: (ruleConfig, resolveState, resolvedFeature) => {
+  evaluate: (ruleConfig, resolveResult, resolvedFeature) => {
     if (checkMissingFeatureType(resolvedFeature)) {
       return [createNoMissingFeatureTypesViolation(resolvedFeature.name)];
     }

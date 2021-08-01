@@ -1,18 +1,50 @@
-import { ResolvedBuildingBlock } from "./ResolvedBuildingBlock";
-import { ResolvedFeature } from "./ResolvedFeature";
-import { ResolvedModule } from "./ResolvedModule";
-import { ResolvedRoot } from "./ResolvedRoot";
+import { ResolvedBuildingBlock } from "./ResolvedBuildingBlock.js";
+import { ResolvedFeature } from "./ResolvedFeature.js";
 
-export interface ResolveState {
-  resolvedRoot: ResolvedRoot;
+export type InRootResolveState = {
+  type: "inRoot";
+};
 
-  resolvedFeatureByName: Map<ResolvedFeature["name"], ResolvedFeature>;
+export type InFeatureResolveState = {
+  type: "inFeature";
 
-  resolvedBuildingBlockByUniqueName: Map<
-    // `${ResolvedFeature["name"]}/${ResolvedBuildingBlock["name"]}`,
-    string,
-    ResolvedBuildingBlock
-  >;
+  feature: ResolvedFeature;
 
-  resolvedModuleByFilePath: Map<string, ResolvedModule>;
-}
+  featurePrivate: boolean;
+
+  siblingFeaturePrivate: ResolvedFeature | undefined;
+
+  parentFeaturePrivate: ResolvedFeature | undefined;
+};
+
+export type InFeaturesFolderResolveState = {
+  type: "inFeaturesFolder";
+
+  feature: ResolvedFeature;
+
+  siblingFeaturePrivate: ResolvedFeature | undefined;
+
+  parentFeaturePrivate: ResolvedFeature | undefined;
+};
+
+export type InBuildingBlockResolveState = {
+  type: "inBuildingBlock";
+
+  buildingBlock: ResolvedBuildingBlock;
+
+  isSubDirectory: boolean;
+
+  buildingBlockPrivate: boolean;
+
+  featurePrivate: boolean;
+
+  siblingFeaturePrivate: ResolvedFeature | undefined;
+
+  parentFeaturePrivate: ResolvedFeature | undefined;
+};
+
+export type ResolveState =
+  | InRootResolveState
+  | InFeatureResolveState
+  | InFeaturesFolderResolveState
+  | InBuildingBlockResolveState;

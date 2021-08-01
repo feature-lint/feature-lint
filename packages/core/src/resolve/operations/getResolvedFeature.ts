@@ -1,11 +1,11 @@
 import { ResolvedFeature } from "../model/ResolvedFeature";
-import { ResolveState } from "../model/ResolveState";
+import { ResolveResult } from "../model/ResolveResult";
 
 export function getResolvedFeature(
-  resolveState: ResolveState,
+  resolveResult: ResolveResult,
   featureName: string
 ): ResolvedFeature {
-  const feature = resolveState.resolvedFeatureByName.get(featureName);
+  const feature = resolveResult.resolvedFeatureByName.get(featureName);
 
   if (feature === undefined) {
     throw new Error("Feature not found");

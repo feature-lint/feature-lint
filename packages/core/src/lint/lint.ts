@@ -7,7 +7,7 @@ import { VIOLATION_PRINTER } from "../registry/violationPrinterRegistry.js";
 import { buildFeatureNameHierarchy } from "../resolve/operations/buildFeatureNameHierarchy.js";
 import { findRootDirectoryPath } from "../resolve/operations/findRootDirectoryPath.js";
 import { ResolvedFeature } from "../resolve/model/ResolvedFeature.js";
-import { ResolveState } from "../resolve/model/ResolveState.js";
+import { ResolveResult } from "../resolve/model/ResolveResult.js";
 import { resolve } from "../resolve/resolve.js";
 import {
   FeatureLintError,
@@ -17,12 +17,12 @@ import {
 import { Failure, Result, Success } from "../shared/util/Result.js";
 import { walkFeatures } from "./operations/walkFeatures.js";
 
-interface LintState {
-  resolveState: ResolveState;
+interface LintResult {
+  resolveResult: ResolveResult;
 }
 
 export const lint = (directoryPath: string) => {
-  let lintResult: Result<LintState, FeatureLintError>;
+  let lintResult: Result<LintResult, FeatureLintError>;
 
   try {
     lintResult = lint2(directoryPath);
@@ -50,7 +50,7 @@ export const lint = (directoryPath: string) => {
 // TODO: Move of some of this to CLI
 export const lint2 = (
   directoryPath: string
-): Result<LintState, FeatureLintError> => {
+): Result<LintResult, FeatureLintError> => {
   const configFilePath = findFeatureLintConfigFilePath(directoryPath);
 
   if (configFilePath === undefined) {
@@ -78,37 +78,34 @@ export const lint2 = (
 
   const rootDirectoryPath = rootDirectoryPathResult.data;
 
-  const resolveStateResult = resolve(
+  const resolveResult = resolve(
     featureLintConfig,
     configFilePath,
     rootDirectoryPath
   );
 
-  if (!resolveStateResult.successful) {
-    return Failure(resolveStateResult.error);
+  if (!resolveResult.successful) {
+    return Failure(resolveResult.error);
   }
 
-  const resolveState = resolveStateResult.data;
+  check(resolveResult.data);
 
-  const checkState = check(resolveState);
-
-  const lintState = {
-    resolveState,
-    checkState,
+  const lintResult: LintResult = {
+    resolveResult: resolveResult.data,
   };
 
-  return Success(lintState);
+  return Success(lintResult);
 };
 
-const render = (lintState: LintState) => {
-  const { resolveState } = lintState;
+const render = (lintState: LintResult) => {
+  const { resolveResult } = lintState;
 
   const featuresCount = Array.from(
-    resolveState.resolvedFeatureByName.keys()
+    resolveResult.resolvedFeatureByName.keys()
   ).length;
 
   const modulesCount = Array.from(
-    resolveState.resolvedModuleByFilePath.keys()
+    resolveResult.resolvedModuleByFilePath.keys()
   ).length;
 
   const printer = Printer(chalk);
@@ -120,14 +117,14 @@ const render = (lintState: LintState) => {
   let totalViolationsCount = 0;
   let totalFeaturesWithViolationsCount = 0;
 
-  walkFeatures(resolveState, (feature) => {
+  walkFeatures(resolveResult, (feature) => {
     const printFeatureHeader = (
       feature: ResolvedFeature,
       violationCount: number
     ) => {
       const featurePath = buildFeatureNameHierarchy(
         feature.name,
-        resolveState
+        resolveResult
       ).join("/");
 
       // TODO: Undefined
@@ -156,7 +153,7 @@ const render = (lintState: LintState) => {
           );
         }
 
-        violationPrinter(printer, violation, resolveState);
+        violationPrinter(printer, violation, resolveResult);
 
         printer.blankLine();
       }

@@ -5,6 +5,8 @@ import { ResolvedBuildingBlock } from "./ResolvedBuildingBlock";
 import { ResolvedFeatureModule } from "./ResolvedModule.js";
 
 export type ResolvedFeature = {
+  thingyType: "feature";
+
   name: string;
 
   featureConfig: FeatureConfig;

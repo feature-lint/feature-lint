@@ -1,15 +1,14 @@
-import * as path from "path";
-import ts from "typescript";
 import { z } from "zod";
 import { BuildingBlockName } from "../config/model/BuildingBlockName.js";
 import { FeatureName } from "../config/model/FeatureName.js";
 import { FeatureTypeName } from "../config/model/FeatureTypeName.js";
 import { printViolationTemplate } from "../rule/print/printViolationTemplate.js";
 import { ResolvedBuildingBlockModule } from "../resolve/model/ResolvedModule.js";
-import { ResolveState } from "../resolve/model/ResolveState.js";
+import { ResolveResult } from "../resolve/model/ResolveResult.js";
 import { BuildingBlockModuleRuleDefinition } from "../rule/model/RuleDefinition.js";
 import { RuleScope } from "../rule/model/RuleScope.js";
 import { Violation } from "../rule/model/Violation.js";
+import { printImportOrExportOfDependency } from "../rule/print/printImportOrExportOfDependency.js";
 
 export type AllowedDependencyType = "featureType" | "feature" | "buildingBlock";
 
@@ -103,24 +102,26 @@ export interface AllowedDependenciesViolationData {
 export const evaluate = (
   ruleScope: RuleScope,
   rule: AllowedDependenciesRuleConfig,
-  resolveState: ResolveState,
+  resolveResult: ResolveResult,
   module: ResolvedBuildingBlockModule
-): Violation[] => {
-  const violations: Violation[] = [];
+): Violation<AllowedDependenciesViolationData>[] => {
+  const violations: Violation<AllowedDependenciesViolationData>[] = [];
 
   for (const moduleFilePath of module.dependencyModuleFilePaths) {
     const dependencyModule =
-      resolveState.resolvedModuleByFilePath.get(moduleFilePath)!;
+      resolveResult.resolvedModuleByFilePath.get(moduleFilePath)!;
 
     if (dependencyModule.type !== "buildingBlockModule") {
       continue;
     }
 
-    const feature = resolveState.resolvedFeatureByName.get(module.featureName)!;
+    const feature = resolveResult.resolvedFeatureByName.get(
+      module.featureName
+    )!;
 
     const featureTypeName = feature.featureTypeName;
 
-    const dependencyFeature = resolveState.resolvedFeatureByName.get(
+    const dependencyFeature = resolveResult.resolvedFeatureByName.get(
       dependencyModule.featureName
     )!;
 
@@ -254,15 +255,17 @@ export const allowedDependencyRuleDefinition: BuildingBlockModuleRuleDefinition<
 
   evaluate,
 
-  printViolation: (printer, violation, resolveState) => {
+  printViolation: (printer, violation, resolveResult) => {
     const { module, dependencyModule, dependencyType, allowedDependencyNames } =
       violation.data;
 
-    const feature = resolveState.resolvedFeatureByName.get(module.featureName)!;
+    const feature = resolveResult.resolvedFeatureByName.get(
+      module.featureName
+    )!;
 
     const featureTypeName = feature.featureTypeName;
 
-    const dependencyFeature = resolveState.resolvedFeatureByName.get(
+    const dependencyFeature = resolveResult.resolvedFeatureByName.get(
       dependencyModule.featureName
     )!;
 
@@ -316,29 +319,7 @@ export const allowedDependencyRuleDefinition: BuildingBlockModuleRuleDefinition<
     const title = `${renderDependentMessagePart()} must not depend on ${renderDependencyMessagePart()}`;
 
     printViolationTemplate(printer, violation, title, () => {
-      const tsImportDeclaration = module.dependencyModuleInfoByFilePath.get(
-        dependencyModule.filePath
-      )!.tsImportDeclaration;
-
-      let { line, character } = ts.getLineAndCharacterOfPosition(
-        module.tsSourceFile,
-        tsImportDeclaration.getStart(module.tsSourceFile)
-      );
-
-      printer.text`\n  At ${path.relative(
-        process.cwd(),
-        module.filePath
-      )}:{dim ${line + 1}:${character + 1}}`;
-
-      printer.blankLine();
-
-      const tsPrinter = ts.createPrinter();
-
-      printer.text`{dim ${line + 1} |} ${tsPrinter.printNode(
-        ts.EmitHint.Unspecified,
-        tsImportDeclaration,
-        module.tsSourceFile
-      )}`;
+      printImportOrExportOfDependency(printer, module, dependencyModule);
 
       printer.blankLine();
 

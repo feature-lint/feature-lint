@@ -6,6 +6,7 @@ import {
 import { noMissingFeatureTypesRuleDefinition } from "../rule-definitions/noMissingFeatureTypes.js";
 import { noUnknownBuildingBlocksRuleDefinition } from "../rule-definitions/noUnknownBuildingBlocks.js";
 import { noUnknownFeatureTypesRuleDefinition } from "../rule-definitions/noUnknownFeatureTypes.js";
+import { restrictedVisibilityRuleDefinition } from "../rule-definitions/restrictedVisibility.js";
 import {
   RuleDefinition,
   RuleDefinitionType,
@@ -25,6 +26,7 @@ export const IMPLICIT_RULE_DEFINITIONS: RuleDefinition<any, any>[] = [
   noUnknownFeatureTypesRuleDefinition,
   noMissingFeatureTypesRuleDefinition,
   noUnknownBuildingBlocksRuleDefinition,
+  restrictedVisibilityRuleDefinition,
 ];
 
 export const getRuleDefinitionByNameAndType = <

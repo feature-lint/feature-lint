@@ -1,12 +1,12 @@
 import { buildUniqueBuildingBlockName } from "./buildUniqueBuildingBlockName.js";
-import { ResolveState } from "../model/ResolveState.js";
+import { ResolveResult } from "../model/ResolveResult.js";
 
 export function getResolvedBuildingBlock(
-  resolveState: ResolveState,
+  resolveResult: ResolveResult,
   featureName: string,
   buildingBlockName: string
 ) {
-  const buildingBlock = resolveState.resolvedBuildingBlockByUniqueName.get(
+  const buildingBlock = resolveResult.resolvedBuildingBlockByUniqueName.get(
     buildUniqueBuildingBlockName(featureName, buildingBlockName)
   );
 

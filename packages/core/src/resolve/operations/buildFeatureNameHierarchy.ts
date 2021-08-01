@@ -1,8 +1,8 @@
-import { ResolveState } from "../model/ResolveState.js";
+import { ResolveResult } from "../model/ResolveResult.js";
 
 export function buildFeatureNameHierarchy(
   featureName: string,
-  resolveState: ResolveState
+  resolveResult: ResolveResult
 ): string[] {
   const hierarchy: string[] = [featureName];
 
@@ -10,7 +10,7 @@ export function buildFeatureNameHierarchy(
 
   while (true) {
     parentFeatureName =
-      resolveState.resolvedFeatureByName.get(
+      resolveResult.resolvedFeatureByName.get(
         parentFeatureName
       )?.parentFeatureName;
 

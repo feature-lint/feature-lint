@@ -3,6 +3,8 @@ import { Violation } from "../../rule/model/Violation.js";
 import { ResolvedBuildingBlockModule } from "./ResolvedModule.js";
 
 export type ResolvedBuildingBlock = {
+  thingyType: "buildingBlock";
+
   name: string;
 
   featureName: string;
