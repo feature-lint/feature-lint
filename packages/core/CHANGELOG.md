@@ -1,5 +1,11 @@
 # @feature-lint/core
 
+## 0.0.9
+
+### Patch Changes
+
+- 963259c: Add restricted-visibility rules. Make feature names unique. Refactor stuff.
+
 ## 0.0.8
 
 ### Patch Changes
