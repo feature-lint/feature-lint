@@ -1,9 +1,9 @@
 name: Build and test
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 jobs:
   buildAndTest:
     name: Build and test (Node.js v${{ matrix.node-version }})
@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14, 16]        
+        node-version: [14, 16.5.0]
     steps:
-      - uses: actions/checkout@v2      
+      - uses: actions/checkout@v2
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
@@ -21,7 +21,7 @@ jobs:
       - name: Install pnpm
         run: npm i pnpm@latest -g
       - name: Install dependencies
-        run: pnpm install        
+        run: pnpm install
       - name: Build packages
         run: pnpm run build:ci
       - name: Test packages
