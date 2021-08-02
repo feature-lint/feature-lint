@@ -1,6 +1,9 @@
 import * as path from "path";
 import { isSamePath } from "./samePath.js";
 
+/**
+ * Example: buildPathHierachy("/a/b/c/d", "/a") => ["/a/b", "/a/b/c", "/a/b/c/d"]
+ */
 export function buildPathHierachy(
   aPath: string,
   rootDirectoryPath: string

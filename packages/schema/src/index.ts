@@ -36,3 +36,7 @@ writeFileSync(
   `./dist/schema/feature-lint-v${featureLintCoreVersion}.schema.json`,
   featureLintConfigJsonSchema
 );
+
+writeFileSync(`./dist/feature.schema.json`, featureConfigJsonSchema);
+
+writeFileSync(`./dist/feature-lint.schema.json`, featureLintConfigJsonSchema);

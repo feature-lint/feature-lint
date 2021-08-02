@@ -1,0 +1,5 @@
+{
+  "$schema": "../../../../../../packages/schema/dist/feature.schema.json",
+
+  "featureType": "foo"
+}

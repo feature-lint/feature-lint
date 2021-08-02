@@ -1,11 +1,15 @@
 import { FeatureConfig } from "../../config/model/FeatureConfig.js";
 import { FeatureTypeConfig } from "../../config/model/FeatureTypeConfig.js";
-import { Violation } from "../../violation/model/Violation.js";
+import { Violation } from "../../rule/model/Violation.js";
 import { ResolvedBuildingBlock } from "./ResolvedBuildingBlock";
 import { ResolvedFeatureModule } from "./ResolvedModule.js";
 
 export type ResolvedFeature = {
+  thingyType: "feature";
+
   name: string;
+
+  simpleName: string;
 
   featureConfig: FeatureConfig;
 

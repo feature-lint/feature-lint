@@ -1,0 +1,13 @@
+{
+  "$schema": "../../../../packages/schema/dist/feature-lint.schema.json",
+
+  "rootDir": "./src",
+
+  "defaultFeatureType": "foo",
+
+  "featureTypes": {
+    "foo": {
+      "buildingBlocks": ["bb1", "bb2", "bb3", "bb4"]
+    }
+  }
+}

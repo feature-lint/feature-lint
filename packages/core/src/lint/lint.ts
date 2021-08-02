@@ -1,13 +1,12 @@
 import chalk from "chalk";
 import { check } from "../check/check.js";
-import { findFeatureLintConfigFilePath } from "../config/findFeatureLintConfigFilePath.js";
-import { readFeatureLintConfig } from "../config/readFeatureLintConfig.js";
-import { Printer } from "../printer/Printer.js";
-import { VIOLATION_PRINTER } from "../render/violationPrinterRegistry.js";
-import { buildFeatureNameHierarchy } from "../resolve/buildFeatureNameHierarchy.js";
-import { findRootDirectoryPath } from "../resolve/findRootDirectoryPath.js";
+import { findFeatureLintConfigFilePath } from "../config/operations/findFeatureLintConfigFilePath.js";
+import { readFeatureLintConfig } from "../config/operations/readFeatureLintConfig.js";
+import { Printer } from "../printer/service/Printer.js";
+import { VIOLATION_PRINTER } from "../registry/violationPrinterRegistry.js";
 import { ResolvedFeature } from "../resolve/model/ResolvedFeature.js";
-import { ResolveState } from "../resolve/model/ResolveState.js";
+import { ResolveResult } from "../resolve/model/ResolveResult.js";
+import { findRootDirectoryPath } from "../resolve/operations/findRootDirectoryPath.js";
 import { resolve } from "../resolve/resolve.js";
 import {
   FeatureLintError,
@@ -15,14 +14,14 @@ import {
   UnexpectedFeatureLintError,
 } from "../shared/model/FeautureLintError.js";
 import { Failure, Result, Success } from "../shared/util/Result.js";
-import { walkFeatures } from "./walkFeatures.js";
+import { walkFeatures } from "./operations/walkFeatures.js";
 
-interface LintState {
-  resolveState: ResolveState;
+interface LintResult {
+  resolveResult: ResolveResult;
 }
 
 export const lint = (directoryPath: string) => {
-  let lintResult: Result<LintState, FeatureLintError>;
+  let lintResult: Result<LintResult, FeatureLintError>;
 
   try {
     lintResult = lint2(directoryPath);
@@ -50,7 +49,7 @@ export const lint = (directoryPath: string) => {
 // TODO: Move of some of this to CLI
 export const lint2 = (
   directoryPath: string
-): Result<LintState, FeatureLintError> => {
+): Result<LintResult, FeatureLintError> => {
   const configFilePath = findFeatureLintConfigFilePath(directoryPath);
 
   if (configFilePath === undefined) {
@@ -78,37 +77,34 @@ export const lint2 = (
 
   const rootDirectoryPath = rootDirectoryPathResult.data;
 
-  const resolveStateResult = resolve(
+  const resolveResult = resolve(
     featureLintConfig,
     configFilePath,
     rootDirectoryPath
   );
 
-  if (!resolveStateResult.successful) {
-    return Failure(resolveStateResult.error);
+  if (!resolveResult.successful) {
+    return Failure(resolveResult.error);
   }
 
-  const resolveState = resolveStateResult.data;
+  check(resolveResult.data);
 
-  const checkState = check(resolveState);
-
-  const lintState = {
-    resolveState,
-    checkState,
+  const lintResult: LintResult = {
+    resolveResult: resolveResult.data,
   };
 
-  return Success(lintState);
+  return Success(lintResult);
 };
 
-const render = (lintState: LintState) => {
-  const { resolveState } = lintState;
+const render = (lintState: LintResult) => {
+  const { resolveResult } = lintState;
 
   const featuresCount = Array.from(
-    resolveState.resolvedFeatureByName.keys()
+    resolveResult.resolvedFeatureByName.keys()
   ).length;
 
   const modulesCount = Array.from(
-    resolveState.resolvedModuleByFilePath.keys()
+    resolveResult.resolvedModuleByFilePath.keys()
   ).length;
 
   const printer = Printer(chalk);
@@ -120,20 +116,15 @@ const render = (lintState: LintState) => {
   let totalViolationsCount = 0;
   let totalFeaturesWithViolationsCount = 0;
 
-  walkFeatures(resolveState, (feature) => {
+  walkFeatures(resolveResult, (feature) => {
     const printFeatureHeader = (
       feature: ResolvedFeature,
       violationCount: number
     ) => {
-      const featurePath = buildFeatureNameHierarchy(
-        feature.name,
-        resolveState
-      ).join("/");
-
       // TODO: Undefined
       const featureType = feature.featureTypeName;
 
-      printer.text`{underline Feature: {bold ${featurePath}} {dim (${featureType})} – Found {bold ${violationCount}} violations(s)}`;
+      printer.text`{underline Feature: {bold ${feature.name}} {dim (${featureType})} – Found {bold ${violationCount}} violations(s)}`;
 
       printer.blankLine();
     };
@@ -148,15 +139,15 @@ const render = (lintState: LintState) => {
       printFeatureHeader(feature, featureViolationsCount);
 
       for (const violation of feature.violations) {
-        const violationPrinter = VIOLATION_PRINTER[violation.name];
+        const violationPrinter = VIOLATION_PRINTER[violation.ruleName];
 
         if (violationPrinter === undefined) {
           throw new Error(
-            `Violation printer not found for violation ${violation.name}`
+            `Violation printer not found for violation ${violation.ruleName}`
           );
         }
 
-        violationPrinter(printer, violation, resolveState);
+        violationPrinter(printer, violation, resolveResult);
 
         printer.blankLine();
       }
