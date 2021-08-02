@@ -23,15 +23,12 @@ export function resolveDirectory(
 
   for (const hierarchyPath of pathHierarchy) {
     if (state.type === "inRoot") {
-      const featureName = path.basename(hierarchyPath);
-
       const resolvedFeature = getOrCreateRootFeature(
         resolveResult,
-        featureName,
         hierarchyPath
       );
 
-      resolvedRoot.featureNames.add(featureName);
+      resolvedRoot.featureNames.add(resolvedFeature.name);
 
       const featurePrivate =
         fs
@@ -87,16 +84,13 @@ export function resolveDirectory(
         continue;
       }
 
-      const featureName = directoryName;
-
       const resolvedFeature = getOrCreateChildFeature(
         resolveResult,
         state,
-        featureName,
         hierarchyPath
       );
 
-      state.feature.childFeatureNames.add(featureName);
+      state.feature.childFeatureNames.add(resolvedFeature.name);
 
       const featurePrivate =
         fs

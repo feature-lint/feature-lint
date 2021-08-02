@@ -9,6 +9,8 @@ export type ResolvedFeature = {
 
   name: string;
 
+  simpleName: string;
+
   featureConfig: FeatureConfig;
 
   featureTypeConfig: FeatureTypeConfig;

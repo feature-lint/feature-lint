@@ -93,7 +93,12 @@ const restrictedVisibilityViolationPrinter: ViolationPrinter<RestrictedVisibilit
 
           printer.blankLine();
 
-          printer.text`Only child features of {bold ${restrictedModule.featureName}} may depend on it.`;
+          const feature = getResolvedFeature(
+            resolveResult,
+            restrictedModule.featureName
+          );
+
+          printer.text`Only child features of {bold ${feature.parentFeatureName}} may depend on it.`;
         });
 
         return;
@@ -111,7 +116,12 @@ const restrictedVisibilityViolationPrinter: ViolationPrinter<RestrictedVisibilit
 
           printer.blankLine();
 
-          printer.text`Only feature {bold ${restrictedModule.featureName}} and its child features may depend on it.`;
+          const feature = getResolvedFeature(
+            resolveResult,
+            restrictedModule.featureName
+          );
+
+          printer.text`Only feature {bold ${feature.parentFeatureName}} and its child features may depend on it.`;
         });
 
         return;

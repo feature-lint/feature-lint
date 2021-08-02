@@ -4,18 +4,23 @@ import { computeFeatureTypeName } from "./operations/computeFeatureTypeName.js";
 import { ResolvedFeature } from "./model/ResolvedFeature.js";
 import { ResolveResult } from "./model/ResolveResult.js";
 import { getFeatureTypeConfig } from "../config/operations/getFeatureTypeConfig";
+import * as path from "path";
 
 export function getOrCreateRootFeature(
   resolveResult: ResolveResult,
-  featureName: string,
-  featureFilePath: string
+  featureDirectoryPath: string
 ): ResolvedFeature {
+  const simpleFeatureName = path.basename(featureDirectoryPath);
+
+  const featureName = simpleFeatureName;
+
   if (resolveResult.resolvedFeatureByName.has(featureName)) {
     return resolveResult.resolvedFeatureByName.get(featureName)!;
   }
 
   const featureConfig =
-    findFeatureConfig(featureFilePath) ?? createEmptyFeatureConfig(featureName);
+    findFeatureConfig(featureDirectoryPath) ??
+    createEmptyFeatureConfig(simpleFeatureName);
 
   const featureTypeName = computeFeatureTypeName(
     resolveResult.resolvedRoot.config,
@@ -31,6 +36,8 @@ export function getOrCreateRootFeature(
     thingyType: "feature",
 
     name: featureName,
+
+    simpleName: simpleFeatureName,
 
     featureConfig,
     featureTypeConfig,

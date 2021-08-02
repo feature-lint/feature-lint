@@ -5,13 +5,17 @@ import { ResolvedFeature } from "./model/ResolvedFeature.js";
 import { ResolveResult } from "./model/ResolveResult.js";
 import { getFeatureTypeConfig } from "../config/operations/getFeatureTypeConfig";
 import { InFeaturesFolderResolveState } from "./model/ResolveState.js";
+import * as path from "path";
 
 export function getOrCreateChildFeature(
   resolveResult: ResolveResult,
   inFeatureFolderState: InFeaturesFolderResolveState,
-  featureName: string,
   featureDirectoryPath: string
 ): ResolvedFeature {
+  const simpleFeatureName = path.basename(featureDirectoryPath);
+
+  const featureName = `${inFeatureFolderState.feature.name}/${simpleFeatureName}`;
+
   if (resolveResult.resolvedFeatureByName.has(featureName)) {
     return resolveResult.resolvedFeatureByName.get(featureName)!;
   }
@@ -34,6 +38,8 @@ export function getOrCreateChildFeature(
     thingyType: "feature",
 
     name: featureName,
+
+    simpleName: featureName,
 
     featureConfig,
     featureTypeConfig,

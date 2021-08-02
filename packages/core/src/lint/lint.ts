@@ -4,10 +4,9 @@ import { findFeatureLintConfigFilePath } from "../config/operations/findFeatureL
 import { readFeatureLintConfig } from "../config/operations/readFeatureLintConfig.js";
 import { Printer } from "../printer/service/Printer.js";
 import { VIOLATION_PRINTER } from "../registry/violationPrinterRegistry.js";
-import { buildFeatureNameHierarchy } from "../resolve/operations/buildFeatureNameHierarchy.js";
-import { findRootDirectoryPath } from "../resolve/operations/findRootDirectoryPath.js";
 import { ResolvedFeature } from "../resolve/model/ResolvedFeature.js";
 import { ResolveResult } from "../resolve/model/ResolveResult.js";
+import { findRootDirectoryPath } from "../resolve/operations/findRootDirectoryPath.js";
 import { resolve } from "../resolve/resolve.js";
 import {
   FeatureLintError,
@@ -122,15 +121,10 @@ const render = (lintState: LintResult) => {
       feature: ResolvedFeature,
       violationCount: number
     ) => {
-      const featurePath = buildFeatureNameHierarchy(
-        feature.name,
-        resolveResult
-      ).join("/");
-
       // TODO: Undefined
       const featureType = feature.featureTypeName;
 
-      printer.text`{underline Feature: {bold ${featurePath}} {dim (${featureType})} – Found {bold ${violationCount}} violations(s)}`;
+      printer.text`{underline Feature: {bold ${feature.name}} {dim (${featureType})} – Found {bold ${violationCount}} violations(s)}`;
 
       printer.blankLine();
     };
