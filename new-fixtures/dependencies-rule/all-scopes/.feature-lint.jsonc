@@ -1,0 +1,35 @@
+{
+  "$schema": "../../../packages/schema/dist/feature-lint.schema.json",
+
+  "rootDir": "./src",
+
+  "featureTypes": {
+    "f": {
+      "buildingBlocks": {
+        "bb0": {
+          "rules": [
+            {
+              "name": "dependencies",
+              "criteria": ["*@bb1", "!*@bb2"]
+            }
+          ]
+        },
+        "bb1": {},
+        "bb2": {}
+      },
+
+      "rules": [
+        {
+          "name": "dependencies",
+          "criteria": ["!:h"]
+        }
+      ]
+    },
+    "g": {
+      "buildingBlocks": ["bb1", "bb2"]
+    },
+    "h": {
+      "buildingBlocks": ["bb1", "bb2"]
+    }
+  }
+}

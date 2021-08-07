@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { FEATURE_TYPE_CONFIG_RULE_SCHEMA } from "../../registry/ruleRegistry.js";
-import { AllowedDependenciesRuleConfig } from "../../rule-definitions/allowedDependencies.js";
 import {
   BuildingBlockConfig,
   UnnamedBuildingBlockConfig,

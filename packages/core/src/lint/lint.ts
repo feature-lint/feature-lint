@@ -124,7 +124,9 @@ const render = (lintState: LintResult) => {
       // TODO: Undefined
       const featureType = feature.featureTypeName;
 
-      printer.text`{underline Feature: {bold ${feature.name}} {dim (${featureType})} – Found {bold ${violationCount}} violations(s)}`;
+      printer.text`{underline Feature: {bold ${feature.name}} {dim (${
+        featureType ?? "?"
+      })} – Found {bold ${violationCount}} violations(s)}`;
 
       printer.blankLine();
     };

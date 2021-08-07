@@ -1,4 +1,3 @@
-import { FeatureName } from "../config/model/FeatureName.js";
 import { ResolvedBuildingBlockModule } from "../resolve/model/ResolvedModule.js";
 import { buildFeatureNameHierarchy } from "../resolve/operations/buildFeatureNameHierarchy.js";
 import { getResolvedFeature } from "../resolve/operations/getResolvedFeature.js";
@@ -137,7 +136,7 @@ export const restrictedVisibilityRuleDefinition: BuildingBlockModuleRuleDefiniti
 
   type: "buildingBlockModule",
 
-  evaluate: (ruleScope, ruleConfig, resolveResult, module) => {
+  evaluate: (ruleConfigByScope, resolveResult, module) => {
     const violations: Violation<RestrictedVisibilityViolationData>[] = [];
 
     for (const moduleFilePath of module.dependencyModuleFilePaths) {
@@ -161,7 +160,7 @@ export const restrictedVisibilityRuleDefinition: BuildingBlockModuleRuleDefiniti
         if (dependencyModule.featureName === module.featureName) {
           if (dependencyModule.buildingBlockPrivate) {
             return {
-              ruleScope,
+              ruleScope: "root",
               ruleName: "restricted-visibility",
               severity: "error",
               data: {
@@ -190,7 +189,7 @@ export const restrictedVisibilityRuleDefinition: BuildingBlockModuleRuleDefiniti
             dependencyModule.buildingBlockPrivate
           ) {
             return {
-              ruleScope,
+              ruleScope: "root",
               ruleName: "restricted-visibility",
               severity: "error",
               data: {
@@ -230,7 +229,7 @@ export const restrictedVisibilityRuleDefinition: BuildingBlockModuleRuleDefiniti
         }
 
         return {
-          ruleScope,
+          ruleScope: "root",
           ruleName: "restricted-visibility",
           severity: "error",
           data: {
@@ -265,7 +264,7 @@ export const restrictedVisibilityRuleDefinition: BuildingBlockModuleRuleDefiniti
         }
 
         return {
-          ruleScope,
+          ruleScope: "root",
           ruleName: "restricted-visibility",
           severity: "error",
           data: {
