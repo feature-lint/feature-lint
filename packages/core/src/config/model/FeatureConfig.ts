@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { FEATURE_CONFIG_RULE_SCHEMA } from "../../registry/ruleRegistry.js";
-import { AllowedDependenciesRuleConfig } from "../../rule-definitions/allowedDependencies.js";
 import { FeatureName } from "./FeatureName.js";
 
 export const FeatureConfig = z.object({

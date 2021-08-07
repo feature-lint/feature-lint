@@ -1,4 +1,7 @@
-import { getRuleDefinitionByNameAndType } from "../registry/ruleRegistry.js";
+import {
+  getRuleDefinitionByNameAndType,
+  RuleConfig,
+} from "../registry/ruleRegistry.js";
 import { ResolvedBuildingBlock } from "../resolve/model/ResolvedBuildingBlock.js";
 import { ResolvedFeature } from "../resolve/model/ResolvedFeature.js";
 import { ResolvedBuildingBlockModule } from "../resolve/model/ResolvedModule.js";
@@ -6,8 +9,7 @@ import { ResolveResult } from "../resolve/model/ResolveResult.js";
 import { getResolvedBuildingBlock } from "../resolve/operations/getResolvedBuildingBlock.js";
 import { getResolvedFeature } from "../resolve/operations/getResolvedFeature.js";
 import { getResolvedModule } from "../resolve/operations/getResolvedModule.js";
-import { RuleScope } from "../rule/model/RuleScope.js";
-import { Violation } from "../rule/model/Violation.js";
+import { RuleConfigByScope } from "../rule/model/RuleDefinition.js";
 
 export function check(resolveResult: ResolveResult): void {
   // TODO: This should not be hardcoded here
@@ -72,62 +74,59 @@ export function check(resolveResult: ResolveResult): void {
     buildingBlock: ResolvedBuildingBlock,
     module: ResolvedBuildingBlockModule
   ) => {
+    type RuleConfigByRuleNameAndRuleScope = Partial<
+      Record<RuleConfig["name"], RuleConfigByScope<RuleConfig>>
+    >;
+
+    const ruleConfigByRuleNameAndRuleScope: RuleConfigByRuleNameAndRuleScope =
+      {};
+
     const featureTypeRules = feature.featureTypeConfig.rules;
+
+    for (const featureTypeRule of featureTypeRules) {
+      ruleConfigByRuleNameAndRuleScope[featureTypeRule.name] = {
+        featureType: featureTypeRule,
+        ...ruleConfigByRuleNameAndRuleScope[featureTypeRule.name],
+      };
+    }
 
     const featureRules = feature.featureConfig.rules;
 
+    for (const featureRule of featureRules) {
+      ruleConfigByRuleNameAndRuleScope[featureRule.name] = {
+        feature: featureRule,
+        ...ruleConfigByRuleNameAndRuleScope[featureRule.name],
+      };
+    }
+
     const buildingBlockRules = buildingBlock.buildingBlockConfig.rules;
+
+    for (const buildingBlockRule of buildingBlockRules) {
+      ruleConfigByRuleNameAndRuleScope[buildingBlockRule.name] = {
+        buildingBlock: buildingBlockRule,
+        ...ruleConfigByRuleNameAndRuleScope[buildingBlockRule.name],
+      };
+    }
+
+    for (const [ruleName, ruleConfigByScope] of Object.entries(
+      ruleConfigByRuleNameAndRuleScope
+    )) {
+      getRuleDefinitionByNameAndType(ruleName, "buildingBlockModule")
+        ?.evaluate(ruleConfigByScope, resolveResult, module)
+        ?.forEach((violation) => {
+          feature.violations.add(violation);
+        });
+    }
 
     // TODO: This should not be hardcoded here
     getRuleDefinitionByNameAndType(
       "restricted-visibility",
       "buildingBlockModule"
     )
-      ?.evaluate("root", {}, resolveResult, module)
+      ?.evaluate({}, resolveResult, module)
       ?.forEach((violation) => {
         feature.violations.add(violation);
       });
-
-    // getRuleDefinitionByNameAndType(
-    //   "restricted-visibility",
-    //   "buildingBlockModule"
-    // )
-    //   ?.evaluate("feature", {}, resolveResult, module)
-    //   ?.forEach((violation) => {
-    //     feature.violations.add(violation);
-    //   });
-
-    const evaluateBuildingBlockRule = (
-      ruleScope: RuleScope,
-      rule: any
-    ): Violation[] => {
-      const ruleDef = getRuleDefinitionByNameAndType(
-        rule.name,
-        "buildingBlockModule"
-      );
-
-      return ruleDef?.evaluate(ruleScope, rule, resolveResult, module) ?? [];
-    };
-
-    const scopeAndRulesEntries: [RuleScope, any[]][] = [
-      ["featureType", featureTypeRules],
-      ["feature", featureRules],
-      ["buildingBlock", buildingBlockRules],
-    ];
-
-    for (const [scope, rules] of scopeAndRulesEntries) {
-      getRuleDefinitionByNameAndType("restricted-visibility", "buildingBlock")
-        ?.evaluate({}, resolveResult, buildingBlock)
-        ?.forEach((violation) => {
-          feature.violations.add(violation);
-        });
-
-      rules.forEach((rule) => {
-        evaluateBuildingBlockRule(scope, rule).forEach((violation) => {
-          feature.violations.add(violation);
-        });
-      });
-    }
   };
 
   // TODO: Sort

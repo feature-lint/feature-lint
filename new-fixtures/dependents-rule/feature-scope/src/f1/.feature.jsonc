@@ -1,0 +1,7 @@
+{
+  "$schema": "../../../../../packages/schema/dist/feature.schema.json",
+
+  "featureType": "f",
+
+  "rules": [{ "name": "dependents", "criteria": ["*", "!f0"] }]
+}
