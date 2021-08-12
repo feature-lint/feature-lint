@@ -1,10 +1,10 @@
-import { findFeatureConfig } from "../config/operations/findFeatureConfig.js";
+import * as path from "path";
 import { createEmptyFeatureConfig } from "../config/model/FeatureConfig.js";
-import { computeFeatureTypeName } from "./operations/computeFeatureTypeName.js";
+import { findFeatureConfig } from "../config/operations/findFeatureConfig.js";
+import { getFeatureTypeConfig } from "../config/operations/getFeatureTypeConfig";
 import { ResolvedFeature } from "./model/ResolvedFeature.js";
 import { ResolveResult } from "./model/ResolveResult.js";
-import { getFeatureTypeConfig } from "../config/operations/getFeatureTypeConfig";
-import * as path from "path";
+import { computeFeatureTypeName } from "./operations/computeFeatureTypeName.js";
 
 export function getOrCreateRootFeature(
   resolveResult: ResolveResult,
@@ -23,8 +23,9 @@ export function getOrCreateRootFeature(
     createEmptyFeatureConfig(simpleFeatureName);
 
   const featureTypeName = computeFeatureTypeName(
-    resolveResult.resolvedRoot.config,
-    featureConfig
+    resolveResult,
+    featureConfig,
+    undefined
   );
 
   const featureTypeConfig = getFeatureTypeConfig(
