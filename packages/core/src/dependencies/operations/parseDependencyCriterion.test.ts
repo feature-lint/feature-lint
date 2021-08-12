@@ -3,7 +3,7 @@ import {
   parseDependencyCriterion,
 } from "./parseDependencyCriterion.js";
 
-describe("dependencySelector", () => {
+describe("parseDependencyCriterion", () => {
   type DependencySelectorByRawDependencySelector = {
     [selector: string]: DependencyCriterion;
   };

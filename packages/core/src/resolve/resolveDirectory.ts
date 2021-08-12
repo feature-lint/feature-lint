@@ -38,7 +38,9 @@ export function resolveDirectory(
           ?.isDirectory() || false;
 
       state = {
-        type: "inFeature",
+        type: resolvedFeature.featureConfig.childFeaturesOnly
+          ? "inFeaturesFolder"
+          : "inFeature",
 
         feature: resolvedFeature,
 
@@ -100,7 +102,9 @@ export function resolveDirectory(
           ?.isDirectory() || false;
 
       state = {
-        type: "inFeature",
+        type: resolvedFeature.featureConfig.childFeaturesOnly
+          ? "inFeaturesFolder"
+          : "inFeature",
 
         feature: resolvedFeature,
 
@@ -116,31 +120,6 @@ export function resolveDirectory(
 
     if (state.type === "inFeature") {
       const directoryName = path.basename(hierarchyPath);
-
-      // TODO: Read features folder name from config
-      if (directoryName === "features") {
-        const siblingFeaturePrivate: ResolvedFeature | undefined = fs
-          .lstatSync(path.join(hierarchyPath, "public"), {
-            throwIfNoEntry: false,
-          })
-          ?.isDirectory()
-          ? state.feature
-          : undefined;
-
-        state = {
-          type: "inFeaturesFolder",
-
-          feature: state.feature,
-
-          siblingFeaturePrivate,
-
-          parentFeaturePrivate: state.featurePrivate
-            ? state.feature
-            : undefined,
-        };
-
-        continue;
-      }
 
       if (directoryName === "private") {
         state = {
@@ -169,6 +148,31 @@ export function resolveDirectory(
           siblingFeaturePrivate: state.siblingFeaturePrivate,
 
           parentFeaturePrivate: state.parentFeaturePrivate,
+        };
+
+        continue;
+      }
+
+      // TODO: Read features folder name from config
+      if (directoryName === "features") {
+        const siblingFeaturePrivate: ResolvedFeature | undefined = fs
+          .lstatSync(path.join(hierarchyPath, "public"), {
+            throwIfNoEntry: false,
+          })
+          ?.isDirectory()
+          ? state.feature
+          : undefined;
+
+        state = {
+          type: "inFeaturesFolder",
+
+          feature: state.feature,
+
+          siblingFeaturePrivate,
+
+          parentFeaturePrivate: state.featurePrivate
+            ? state.feature
+            : undefined,
         };
 
         continue;

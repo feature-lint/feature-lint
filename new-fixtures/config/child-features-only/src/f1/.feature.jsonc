@@ -1,0 +1,7 @@
+{
+  "$schema": "../../../../../packages/schema/dist/feature.schema.json",
+
+  "defaultChildFeatureType": "g",
+
+  "childFeaturesOnly": true
+}

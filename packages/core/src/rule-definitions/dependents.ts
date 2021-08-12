@@ -147,8 +147,6 @@ export const dependentsRuleDefinition: BuildingBlockModuleRuleDefinition<
 
       printer.blankLine();
 
-      printer.text`${JSON.stringify(violation.data.denyCriterion)}`;
-
       /*       printer.text`${renderDependentMessagePart()} may only depend on ${renderDependencyTypeMessagePart()}: ${Array.from(
         allowedDependencyNames
       )
