@@ -8,6 +8,7 @@ export const FeatureConfig = z.object({
   name: FeatureName.optional(),
   featureType: FeatureTypeName.optional(),
   defaultChildFeatureType: FeatureTypeName.optional(),
+  childFeaturesOnly: z.boolean().optional().default(false),
   rules: z.array(FEATURE_CONFIG_RULE_SCHEMA).optional().default([]),
 });
 
