@@ -1,5 +1,13 @@
 # @feature-lint/core
 
+## 0.0.10
+
+### Patch Changes
+
+- 68c12ef: Add new dependencies/dependents rules
+- 6e4376b: Add default child feature type config
+- 56e1f23: Add child features only config
+
 ## 0.0.9
 
 ### Patch Changes
