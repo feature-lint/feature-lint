@@ -1,5 +1,11 @@
 # @feature-lint/core
 
+## 0.0.11
+
+### Patch Changes
+
+- 7ec78fc: Add feature name matcher for feature type
+
 ## 0.0.10
 
 ### Patch Changes
