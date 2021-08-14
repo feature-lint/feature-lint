@@ -15,12 +15,12 @@ export type ResolvedFeature = {
 
   featureTypeConfig: FeatureTypeConfig;
 
-  /**
-   * Either the default type from FeatureLint config or the type from feature config.
-   *
-   * May be undefined if feature type is missing altogether
-   */
   featureTypeName: string | undefined;
+
+  /**
+   * The feature type names derived from a feature type's feature name matcher.
+   */
+  matchedFeatureTypeNames: string[];
 
   parentFeatureName: ResolvedFeature["name"] | undefined;
   childFeatureNames: Set<ResolvedFeature["name"]>;

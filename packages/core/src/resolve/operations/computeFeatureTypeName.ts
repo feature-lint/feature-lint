@@ -3,21 +3,54 @@ import { ResolveResult } from "../model/ResolveResult.js";
 import { buildFeatureNameHierarchy } from "./buildFeatureNameHierarchy.js";
 import { getResolvedFeature } from "./getResolvedFeature.js";
 
+interface ComputeFeatureTypeNameReturnValue {
+  featureTypeName: string | undefined;
+  matchedFeatureTypeNames: string[];
+}
+
 export function computeFeatureTypeName(
   resolveResult: ResolveResult,
   featureConfig: FeatureConfig,
+  simpleFeatureName: string,
   parentFeatureName: string | undefined
-): string | undefined {
+): ComputeFeatureTypeNameReturnValue {
   const featureLintConfig = resolveResult.resolvedRoot.config;
+
+  const matchedFeatureTypeNames = featureLintConfig.featureTypes
+    .filter((featureType) => {
+      const { featureNameMatcher } = featureType;
+
+      if (featureNameMatcher === undefined) {
+        return false;
+      }
+
+      return simpleFeatureName.match(featureNameMatcher) !== null;
+    })
+    .map((featureType) => {
+      return featureType.name;
+    });
 
   // Explicit feature type is always preferred
   if (featureConfig.featureType !== undefined) {
-    return featureConfig.featureType;
+    return {
+      featureTypeName: featureConfig.featureType,
+      matchedFeatureTypeNames,
+    };
+  }
+
+  if (matchedFeatureTypeNames.length === 1) {
+    return {
+      featureTypeName: matchedFeatureTypeNames[0],
+      matchedFeatureTypeNames,
+    };
   }
 
   // Use default type for root features
   if (parentFeatureName === undefined) {
-    return featureLintConfig.defaultFeatureType;
+    return {
+      featureTypeName: featureLintConfig.defaultFeatureType,
+      matchedFeatureTypeNames,
+    };
   }
 
   const findClosedDefaultChildFeatureTypeName = () => {
@@ -26,8 +59,8 @@ export function computeFeatureTypeName(
       resolveResult
     ).reverse();
 
-    for (const featureName of featureNameHierarchy) {
-      const feature = getResolvedFeature(resolveResult, featureName);
+    for (const ancestorFeatureName of featureNameHierarchy) {
+      const feature = getResolvedFeature(resolveResult, ancestorFeatureName);
 
       if (feature.featureConfig.defaultChildFeatureType === undefined) {
         continue;
@@ -39,5 +72,9 @@ export function computeFeatureTypeName(
 
   const defaultChildFeatureTypeName = findClosedDefaultChildFeatureTypeName();
 
-  return defaultChildFeatureTypeName ?? featureLintConfig.defaultFeatureType;
+  return {
+    featureTypeName:
+      defaultChildFeatureTypeName ?? featureLintConfig.defaultFeatureType,
+    matchedFeatureTypeNames,
+  };
 }

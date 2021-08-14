@@ -26,9 +26,10 @@ export function getOrCreateChildFeature(
 
   const parentFeatureName = inFeatureFolderState.feature.name;
 
-  const featureTypeName = computeFeatureTypeName(
+  const { featureTypeName, matchedFeatureTypeNames } = computeFeatureTypeName(
     resolveResult,
     featureConfig,
+    simpleFeatureName,
     parentFeatureName
   );
 
@@ -48,6 +49,7 @@ export function getOrCreateChildFeature(
     featureTypeConfig,
 
     featureTypeName,
+    matchedFeatureTypeNames,
 
     parentFeatureName,
     childFeatureNames: new Set(),
