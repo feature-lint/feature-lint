@@ -1,0 +1,28 @@
+{
+  "$schema": "../../../packages/schema/dist/feature-lint.schema.json",
+
+  "rootDir": "./src",
+
+  "defaultFeatureType": "j",
+
+  "featureTypes": {
+    "f": {
+      "buildingBlocks": ["ff"],
+      "featureNameMatcher": "f.*"
+    },
+    "g": {
+      "buildingBlocks": ["gg"],
+      "featureNameMatcher": "g.*"
+    },
+    "gg": {
+      "buildingBlocks": ["gg"],
+      "featureNameMatcher": "g.*"
+    },
+    "h": {
+      "buildingBlocks": ["hh"]
+    },
+    "j": {
+      "buildingBlocks": ["jj"]
+    }
+  }
+}

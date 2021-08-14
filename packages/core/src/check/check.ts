@@ -26,6 +26,12 @@ export function check(resolveResult: ResolveResult): void {
         feature.violations.add(violation);
       });
 
+    getRuleDefinitionByNameAndType("wrong-feature-type-match", "feature")
+      ?.evaluate({}, resolveResult, feature)
+      ?.forEach((violation) => {
+        feature.violations.add(violation);
+      });
+
     for (const buildingBlockName of feature.buildingBlockNames) {
       const buildingBlock = getResolvedBuildingBlock(
         resolveResult,

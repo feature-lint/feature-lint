@@ -16,6 +16,7 @@ import {
   DependentsRuleConfig,
   dependentsRuleDefinition,
 } from "../rule-definitions/dependents.js";
+import { wrongFeatureTypeMatchRuleDefinition } from "../rule-definitions/wrongFeatureTypeMatch.js";
 
 export const FEATURE_TYPE_CONFIG_RULE_SCHEMA = z.union([
   DependenciesRuleConfig,
@@ -44,6 +45,7 @@ export const IMPLICIT_RULE_DEFINITIONS: RuleDefinition<any, any>[] = [
   noMissingFeatureTypesRuleDefinition,
   noUnknownBuildingBlocksRuleDefinition,
   restrictedVisibilityRuleDefinition,
+  wrongFeatureTypeMatchRuleDefinition,
 ];
 
 export const getRuleDefinitionByNameAndType = <

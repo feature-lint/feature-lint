@@ -22,9 +22,10 @@ export function getOrCreateRootFeature(
     findFeatureConfig(featureDirectoryPath) ??
     createEmptyFeatureConfig(simpleFeatureName);
 
-  const featureTypeName = computeFeatureTypeName(
+  const { featureTypeName, matchedFeatureTypeNames } = computeFeatureTypeName(
     resolveResult,
     featureConfig,
+    simpleFeatureName,
     undefined
   );
 
@@ -44,6 +45,7 @@ export function getOrCreateRootFeature(
     featureTypeConfig,
 
     featureTypeName,
+    matchedFeatureTypeNames,
 
     parentFeatureName: undefined,
     childFeatureNames: new Set(),

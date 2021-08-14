@@ -46,6 +46,32 @@ export type BuildingBlocks = z.infer<typeof BuildingBlocks>;
 
 export const UnnamedFeatureTypeConfig = z.object({
   buildingBlocks: BuildingBlocks,
+  featureNameMatcher: z
+    .string()
+    .optional()
+    .refine(
+      (rawMatcher) => {
+        if (rawMatcher === undefined) {
+          return true;
+        }
+
+        try {
+          new RegExp(rawMatcher);
+
+          return true;
+        } catch (e) {
+          return false;
+        }
+      },
+      { message: "Invalid pattern" }
+    )
+    .transform((rawMatcher) => {
+      if (rawMatcher === undefined) {
+        return undefined;
+      }
+
+      return new RegExp(rawMatcher);
+    }),
   rules: z.array(FEATURE_TYPE_CONFIG_RULE_SCHEMA).optional().default([]),
 });
 
