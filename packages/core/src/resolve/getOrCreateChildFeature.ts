@@ -58,6 +58,8 @@ export function getOrCreateChildFeature(
 
     moduleFilePaths: new Set(),
 
+    dependencyModuleFilePathsByFeatureName: new Map(),
+
     violations: new Set(),
   };
 

@@ -29,5 +29,7 @@ export type ResolvedFeature = {
 
   moduleFilePaths: Set<ResolvedFeatureModule["filePath"]>;
 
+  dependencyModuleFilePathsByFeatureName: Map<string, Set<string>>;
+
   violations: Set<Violation>;
 };

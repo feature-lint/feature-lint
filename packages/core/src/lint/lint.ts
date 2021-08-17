@@ -113,7 +113,29 @@ const render = (lintState: LintResult) => {
 
   printer.blankLine(1);
 
-  let totalViolationsCount = 0;
+  const totalGlobalViolationsCount = resolveResult.resolvedRoot.violations.size;
+
+  if (totalGlobalViolationsCount > 0) {
+    printer.text`{underline Found {bold ${totalGlobalViolationsCount}} global violation(s)}`;
+
+    printer.blankLine();
+
+    for (const violation of resolveResult.resolvedRoot.violations) {
+      const violationPrinter = VIOLATION_PRINTER[violation.ruleName];
+
+      if (violationPrinter === undefined) {
+        throw new Error(
+          `Violation printer not found for violation ${violation.ruleName}`
+        );
+      }
+
+      violationPrinter(printer, violation, resolveResult);
+
+      printer.blankLine();
+    }
+  }
+
+  let totalFeatureViolationsCount = 0;
   let totalFeaturesWithViolationsCount = 0;
 
   walkFeatures(resolveResult, (feature) => {
@@ -136,7 +158,7 @@ const render = (lintState: LintResult) => {
     if (featureViolationsCount > 0) {
       totalFeaturesWithViolationsCount++;
 
-      totalViolationsCount += featureViolationsCount;
+      totalFeatureViolationsCount += featureViolationsCount;
 
       printFeatureHeader(feature, featureViolationsCount);
 
@@ -158,10 +180,13 @@ const render = (lintState: LintResult) => {
     }
   });
 
-  if (totalViolationsCount > 0) {
-    printer.text`{red Found ${totalViolationsCount} violation(s) in ${totalFeaturesWithViolationsCount} feature(s)}`;
+  if (totalFeatureViolationsCount > 0 || totalGlobalViolationsCount > 0) {
+    // printer.text`{red Found {bold ${totalFeatureViolationsCount}} violation(s) in {bold ${totalFeaturesWithViolationsCount}} feature(s) and {bold ${totalGlobalViolationsCount}} global violation(s)}`;
+    printer.text`{red Found {bold ${
+      totalFeatureViolationsCount + totalGlobalViolationsCount
+    }} violation(s)}`;
   } else {
-    printer.text`{green Found 0 violation(s) found}`;
+    printer.text`{green Found 0 violation(s)}`;
   }
 
   printer.log();

@@ -3,6 +3,8 @@ import ts from "typescript";
 import { ResolveResult } from "./model/ResolveResult.js";
 import { ResolvedModule } from "./model/ResolvedModule.js";
 import { resolveFile } from "./resolveFile";
+import { getResolvedFeature } from "./operations/getResolvedFeature.js";
+import { getResolvedModule } from "./operations/getResolvedModule.js";
 
 export function resolveModuleDependencies(
   resolveResult: ResolveResult,
@@ -42,16 +44,13 @@ export function resolveModuleDependencies(
         return;
       }
 
-      resolvedModule?.dependencyModuleFilePaths.add(
-        path.normalize(resolvedFileName)
-      );
+      const moduleFilepath = path.normalize(resolvedFileName);
 
-      resolvedModule?.dependencyModuleInfoByFilePath.set(
-        path.normalize(resolvedFileName),
-        {
-          tsImportOrExportDeclaration: node,
-        }
-      );
+      resolvedModule?.dependencyModuleFilePaths.add(moduleFilepath);
+
+      resolvedModule?.dependencyModuleInfoByFilePath.set(moduleFilepath, {
+        tsImportOrExportDeclaration: node,
+      });
 
       const resolved = resolveFile(resolveResult, resolvedFileName);
 
@@ -59,9 +58,36 @@ export function resolveModuleDependencies(
         return;
       }
 
-      resolveResult.resolvedModuleByFilePath
-        .get(path.normalize(resolvedFileName))
-        ?.dependentModuleFilesPaths.add(path.normalize(filePath));
+      const resolvedDependencyModule = getResolvedModule(
+        resolveResult,
+        moduleFilepath
+      );
+
+      if (
+        "featureName" in resolvedModule &&
+        "featureName" in resolvedDependencyModule
+      ) {
+        const resolvedFeature = getResolvedFeature(
+          resolveResult,
+          resolvedModule.featureName
+        );
+
+        const dependencyModuleFilesPaths =
+          resolvedFeature.dependencyModuleFilePathsByFeatureName.get(
+            resolvedDependencyModule.featureName
+          ) ?? new Set();
+
+        dependencyModuleFilesPaths.add(moduleFilepath);
+
+        resolvedFeature.dependencyModuleFilePathsByFeatureName.set(
+          resolvedDependencyModule.featureName,
+          dependencyModuleFilesPaths
+        );
+      }
+
+      resolvedDependencyModule.dependentModuleFilesPaths.add(
+        path.normalize(filePath)
+      );
     }
   });
 }

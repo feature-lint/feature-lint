@@ -32,6 +32,12 @@ export function check(resolveResult: ResolveResult): void {
         feature.violations.add(violation);
       });
 
+    getRuleDefinitionByNameAndType("no-cyclic-feature-dependency", "feature")
+      ?.evaluate({}, resolveResult, feature)
+      ?.forEach((violation) => {
+        feature.violations.add(violation);
+      });
+
     for (const buildingBlockName of feature.buildingBlockNames) {
       const buildingBlock = getResolvedBuildingBlock(
         resolveResult,
@@ -134,6 +140,12 @@ export function check(resolveResult: ResolveResult): void {
         feature.violations.add(violation);
       });
   };
+
+  getRuleDefinitionByNameAndType("no-cyclic-feature-dependency", "root")
+    ?.evaluate({}, resolveResult)
+    ?.forEach((violation) => {
+      resolveResult.resolvedRoot.violations.add(violation);
+    });
 
   // TODO: Sort
   for (const featureName of resolveResult.resolvedRoot.featureNames) {

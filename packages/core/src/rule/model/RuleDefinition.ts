@@ -7,12 +7,13 @@ import { Violation } from "./Violation.js";
 import { ViolationPrinter } from "./ViolationPrinter.js";
 
 export type RuleDefinitionType =
+  | "root"
   | "feature"
   | "buildingBlock"
-  | "buildingBlockModule"
-  | "buildingBlockModule2";
+  | "buildingBlockModule";
 
 export type RuleDefinition<RULE_CONFIG, VIOLATION_DATA> =
+  | RootRuleDefinition<RULE_CONFIG, VIOLATION_DATA>
   | FeatureRuleDefinition<RULE_CONFIG, VIOLATION_DATA>
   | BuildingBlockRuleDefinition<RULE_CONFIG, VIOLATION_DATA>
   | BuildingBlockModuleRuleDefinition<RULE_CONFIG, VIOLATION_DATA>;
@@ -25,9 +26,20 @@ export interface BaseRuleDefinition<VIOLATION_DATA> {
   printViolation: ViolationPrinter<VIOLATION_DATA>;
 }
 
-export type RuleConfigByScope<RULE_CONFIG> = Partial<
-  Record<RuleScope, RULE_CONFIG>
->;
+export type RuleConfigByScope<
+  RULE_CONFIG,
+  RULE_SCOPE extends RuleScope = RuleScope
+> = Partial<Record<RULE_SCOPE, RULE_CONFIG>>;
+
+export interface RootRuleDefinition<RULE_CONFIG, VIOLATION_DATA>
+  extends BaseRuleDefinition<VIOLATION_DATA> {
+  type: "root";
+
+  evaluate: (
+    ruleConfigByScope: RuleConfigByScope<RULE_CONFIG, "root">,
+    resolveResult: ResolveResult
+  ) => Violation<VIOLATION_DATA>[];
+}
 
 export interface BuildingBlockModuleRuleDefinition<RULE_CONFIG, VIOLATION_DATA>
   extends BaseRuleDefinition<VIOLATION_DATA> {
@@ -45,6 +57,7 @@ export interface FeatureRuleDefinition<RULE_CONFIG, VIOLATION_DATA>
   type: "feature";
 
   evaluate: (
+    // TODO: Should use RuleConfigByScope<RULE_CONFIG>
     ruleConfig: RULE_CONFIG,
     resolveResult: ResolveResult,
     feature: ResolvedFeature
@@ -56,6 +69,7 @@ export interface BuildingBlockRuleDefinition<RULE_CONFIG, VIOLATION_DATA>
   type: "buildingBlock";
 
   evaluate: (
+    // TODO: Should use RuleConfigByScope<RULE_CONFIG>
     ruleConfig: RULE_CONFIG,
     resolveResult: ResolveResult,
     buildingBlock: ResolvedBuildingBlock
