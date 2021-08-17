@@ -1,5 +1,12 @@
 # @feature-lint/cli
 
+## 0.0.12
+
+### Patch Changes
+
+- Updated dependencies [f82b74f]
+  - @feature-lint/core@0.0.12
+
 ## 0.0.11
 
 ### Patch Changes
