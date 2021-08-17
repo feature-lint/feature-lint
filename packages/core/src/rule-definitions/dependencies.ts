@@ -136,7 +136,7 @@ export const dependenciesRuleDefinition: BuildingBlockModuleRuleDefinition<
         dependencyModule
       );
 
-      printer.blankLine();
+      // printer.blankLine();
 
       /*       printer.text`${renderDependentMessagePart()} may only depend on ${renderDependencyTypeMessagePart()}: ${Array.from(
         allowedDependencyNames

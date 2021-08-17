@@ -139,6 +139,15 @@ export function check(resolveResult: ResolveResult): void {
       ?.forEach((violation) => {
         feature.violations.add(violation);
       });
+
+    getRuleDefinitionByNameAndType(
+      "no-ancestor-feature-dependency",
+      "buildingBlockModule"
+    )
+      ?.evaluate({}, resolveResult, module)
+      ?.forEach((violation) => {
+        feature.violations.add(violation);
+      });
   };
 
   getRuleDefinitionByNameAndType("no-cyclic-feature-dependency", "root")
