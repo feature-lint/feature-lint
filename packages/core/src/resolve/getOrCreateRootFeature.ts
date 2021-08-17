@@ -54,6 +54,8 @@ export function getOrCreateRootFeature(
 
     moduleFilePaths: new Set(),
 
+    dependencyModuleFilePathsByFeatureName: new Map(),
+
     violations: new Set(),
   };
 
