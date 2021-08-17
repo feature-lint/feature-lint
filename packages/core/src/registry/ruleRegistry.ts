@@ -18,6 +18,7 @@ import {
 } from "../rule-definitions/dependents.js";
 import { wrongFeatureTypeMatchRuleDefinition } from "../rule-definitions/wrongFeatureTypeMatch.js";
 import { noCyclicFeatureDependencyRuleDefinition } from "../rule-definitions/noCyclicFeatureDependency.js";
+import { noAncestorFeatureDependencyRuleDefinition } from "../rule-definitions/noAncestorFeatureDependency.js";
 
 export const FEATURE_TYPE_CONFIG_RULE_SCHEMA = z.union([
   DependenciesRuleConfig,
@@ -42,12 +43,13 @@ export const RULE_DEFINITIONS: RuleDefinition<any, any>[] = [
 export type RuleConfig = DependenciesRuleConfig | DependentsRuleConfig;
 
 export const IMPLICIT_RULE_DEFINITIONS: RuleDefinition<any, any>[] = [
-  noUnknownFeatureTypesRuleDefinition,
+  noAncestorFeatureDependencyRuleDefinition,
+  noCyclicFeatureDependencyRuleDefinition,
   noMissingFeatureTypesRuleDefinition,
   noUnknownBuildingBlocksRuleDefinition,
+  noUnknownFeatureTypesRuleDefinition,
   restrictedVisibilityRuleDefinition,
   wrongFeatureTypeMatchRuleDefinition,
-  noCyclicFeatureDependencyRuleDefinition,
 ];
 
 export const getRuleDefinitionByNameAndType = <
