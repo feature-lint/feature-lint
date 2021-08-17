@@ -1,5 +1,11 @@
 # @feature-lint/core
 
+## 0.0.12
+
+### Patch Changes
+
+- f82b74f: Add no-cyclic-feature-dependency rule
+
 ## 0.0.11
 
 ### Patch Changes
