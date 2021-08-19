@@ -1,14 +1,12 @@
 import { FeatureLintConfig } from "../config/model/FeatureLintConfig.js";
 import { Result, Success } from "../shared/util/Result.js";
-import { createTsProgram } from "./operations/createTsProgram.js";
-import { ResolvedBuildingBlock } from "./model/ResolvedBuildingBlock.js";
-import { ResolvedFeature } from "./model/ResolvedFeature.js";
 import { ResolvedRoot } from "./model/ResolvedRoot.js";
 import { ResolveResult } from "./model/ResolveResult.js";
+import { createTsProgram } from "./operations/createTsProgram.js";
+import { resolveDirectory } from "./resolveDirectory.js";
+import { resolveFile } from "./resolveFile.js";
 import { isSamePath } from "./util/samePath.js";
 import { walkDirectory } from "./util/walkDirectory.js";
-import { resolveDirectory } from "./resolveDirectory";
-import { resolveFile } from "./resolveFile";
 
 export const resolve = (
   featureLintConfig: FeatureLintConfig,

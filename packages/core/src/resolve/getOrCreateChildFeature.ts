@@ -1,7 +1,7 @@
 import * as path from "path";
 import { createEmptyFeatureConfig } from "../config/model/FeatureConfig.js";
 import { findFeatureConfig } from "../config/operations/findFeatureConfig.js";
-import { getFeatureTypeConfig } from "../config/operations/getFeatureTypeConfig";
+import { getFeatureTypeConfig } from "../config/operations/getFeatureTypeConfig.js";
 import { ResolvedFeature } from "./model/ResolvedFeature.js";
 import { ResolveResult } from "./model/ResolveResult.js";
 import { InFeaturesFolderResolveState } from "./model/ResolveState.js";

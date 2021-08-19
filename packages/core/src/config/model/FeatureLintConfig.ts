@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ROOT_CONFIG_RULE_SCHEMA } from "../../registry/ruleRegistry.js";
 import {
   UnnamedFeatureTypeConfig,
   FeatureTypeConfig,
@@ -37,6 +38,8 @@ export const FeatureLintConfig = z.object({
   defaultFeatureType: FeatureTypeName.optional(),
 
   featureTypes: FeatureTypes,
+
+  rules: z.array(ROOT_CONFIG_RULE_SCHEMA).optional().default([]),
 });
 // .refine(
 //   (featureLintConfig) => {

@@ -19,28 +19,44 @@ import {
 import { wrongFeatureTypeMatchRuleDefinition } from "../rule-definitions/wrongFeatureTypeMatch.js";
 import { noCyclicFeatureDependencyRuleDefinition } from "../rule-definitions/noCyclicFeatureDependency.js";
 import { noAncestorFeatureDependencyRuleDefinition } from "../rule-definitions/noAncestorFeatureDependency.js";
+import {
+  RestrictedExternalModulesRuleConfig,
+  restrictedExternalModulesRuleDefinition,
+} from "../rule-definitions/restrictedExternalModules.js";
+
+export const ROOT_CONFIG_RULE_SCHEMA = z.union([
+  RestrictedExternalModulesRuleConfig,
+  RestrictedExternalModulesRuleConfig,
+]);
 
 export const FEATURE_TYPE_CONFIG_RULE_SCHEMA = z.union([
   DependenciesRuleConfig,
   DependentsRuleConfig,
+  RestrictedExternalModulesRuleConfig,
 ]);
 
 export const FEATURE_CONFIG_RULE_SCHEMA = z.union([
   DependenciesRuleConfig,
   DependentsRuleConfig,
+  RestrictedExternalModulesRuleConfig,
 ]);
 
 export const BUILDING_BLOCK_CONFIG_RULE_SCHEMA = z.union([
   DependenciesRuleConfig,
   DependentsRuleConfig,
+  RestrictedExternalModulesRuleConfig,
 ]);
 
 export const RULE_DEFINITIONS: RuleDefinition<any, any>[] = [
   dependenciesRuleDefinition,
   dependentsRuleDefinition,
+  restrictedExternalModulesRuleDefinition,
 ];
 
-export type RuleConfig = DependenciesRuleConfig | DependentsRuleConfig;
+export type RuleConfig =
+  | DependenciesRuleConfig
+  | DependentsRuleConfig
+  | RestrictedExternalModulesRuleConfig;
 
 export const IMPLICIT_RULE_DEFINITIONS: RuleDefinition<any, any>[] = [
   noAncestorFeatureDependencyRuleDefinition,

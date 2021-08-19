@@ -93,6 +93,15 @@ export function check(resolveResult: ResolveResult): void {
     const ruleConfigByRuleNameAndRuleScope: RuleConfigByRuleNameAndRuleScope =
       {};
 
+    const rootRules = resolveResult.resolvedRoot.config.rules;
+
+    for (const rootRule of rootRules) {
+      ruleConfigByRuleNameAndRuleScope[rootRule.name] = {
+        root: rootRule,
+        ...ruleConfigByRuleNameAndRuleScope[rootRule.name],
+      };
+    }
+
     const featureTypeRules = feature.featureTypeConfig.rules;
 
     for (const featureTypeRule of featureTypeRules) {

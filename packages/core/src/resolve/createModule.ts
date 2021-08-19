@@ -21,6 +21,8 @@ export function createModule(
 
         tsSourceFile,
 
+        externalModuleByModuleName: new Map(),
+
         filePath: path.normalize(moduleFilePath),
 
         dependencyModuleFilePaths: new Set(),
@@ -46,6 +48,8 @@ export function createModule(
         type: "featureModule",
 
         tsSourceFile,
+
+        externalModuleByModuleName: new Map(),
 
         filePath: path.normalize(moduleFilePath),
 
@@ -78,6 +82,8 @@ export function createModule(
 
         tsSourceFile,
 
+        externalModuleByModuleName: new Map(),
+
         filePath: path.normalize(moduleFilePath),
 
         featureName: state.feature.name,
@@ -108,6 +114,8 @@ export function createModule(
         type: "buildingBlockModule",
 
         tsSourceFile,
+
+        externalModuleByModuleName: new Map(),
 
         filePath: path.normalize(moduleFilePath),
 
