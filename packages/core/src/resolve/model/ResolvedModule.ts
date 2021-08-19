@@ -10,7 +10,12 @@ export type ResolvedModuleType =
   | "featureModule"
   | "buildingBlockModule";
 
-interface DependencyModuleInfo {
+export interface DependencyModuleInfo {
+  tsImportOrExportDeclaration: ts.ImportDeclaration | ts.ExportDeclaration;
+}
+
+export interface ExternalModule {
+  name: string;
   tsImportOrExportDeclaration: ts.ImportDeclaration | ts.ExportDeclaration;
 }
 
@@ -23,6 +28,8 @@ interface CommonResolvedModule {
   filePath: string;
 
   tsSourceFile: ts.SourceFile;
+
+  externalModuleByModuleName: Map<string, ExternalModule>;
 
   dependencyModuleFilePaths: Set<string>;
 

@@ -1,9 +1,9 @@
 import * as path from "path";
 import { ResolveResult } from "./model/ResolveResult.js";
 import { isSubPath } from "./util/isSubPath.js";
-import { createModule } from "./createModule";
-import { resolveDirectory } from "./resolveDirectory";
-import { resolveModuleDependencies } from "./resolveModuleDependencies";
+import { createModule } from "./createModule.js";
+import { resolveDirectory } from "./resolveDirectory.js";
+import { resolveModuleDependencies } from "./resolveModuleDependencies.js";
 
 export function resolveFile(
   resolveResult: ResolveResult,

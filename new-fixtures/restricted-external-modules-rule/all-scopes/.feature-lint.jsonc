@@ -1,0 +1,28 @@
+{
+  "$schema": "../../../packages/schema/dist/feature-lint.schema.json",
+
+  "rootDir": "./src",
+
+  "featureTypes": {
+    "f": {
+      "buildingBlocks": [
+        {
+          "name": "bb0",
+          "rules": [
+            {
+              "name": "restricted-external-modules",
+              "criteria": ["!m", "o", "!p", "!@scope/.*"]
+            }
+          ]
+        }
+      ]
+    }
+  },
+
+  "rules": [
+    {
+      "name": "restricted-external-modules",
+      "criteria": ["!n", "!o", "!p"]
+    }
+  ]
+}

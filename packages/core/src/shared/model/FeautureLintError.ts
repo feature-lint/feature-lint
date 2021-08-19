@@ -1,7 +1,7 @@
 import { Chalk } from "chalk";
 import { ZodError } from "zod";
 import { Printer } from "../../printer/service/Printer.js";
-import { printViolationLikeTemplate } from "../print/printViolationLikeTemplate";
+import { printViolationLikeTemplate } from "../print/printViolationLikeTemplate.js";
 
 export interface FeatureLintError {
   type: string;

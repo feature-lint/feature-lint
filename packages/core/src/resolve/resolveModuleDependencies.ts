@@ -2,7 +2,7 @@ import * as path from "path";
 import ts from "typescript";
 import { ResolveResult } from "./model/ResolveResult.js";
 import { ResolvedModule } from "./model/ResolvedModule.js";
-import { resolveFile } from "./resolveFile";
+import { resolveFile } from "./resolveFile.js";
 import { getResolvedFeature } from "./operations/getResolvedFeature.js";
 import { getResolvedModule } from "./operations/getResolvedModule.js";
 
@@ -34,13 +34,28 @@ export function resolveModuleDependencies(
       );
 
       if (resolvedTsModule === undefined) {
+        // TODO: This might be wrong, but this way we can still check against external modules even if they are not installed
+        if (!node.moduleSpecifier.text.trim().startsWith(".")) {
+          resolvedModule.externalModuleByModuleName.set(
+            node.moduleSpecifier.text,
+            {
+              name: node.moduleSpecifier.text,
+              tsImportOrExportDeclaration: node,
+            }
+          );
+        }
+
         return;
       }
 
       const { resolvedFileName, isExternalLibraryImport } = resolvedTsModule;
 
-      // TODO: We might want to include them to implement restricted import rules
       if (isExternalLibraryImport) {
+        resolvedModule.externalModuleByModuleName.set(
+          node.moduleSpecifier.text,
+          { name: node.moduleSpecifier.text, tsImportOrExportDeclaration: node }
+        );
+
         return;
       }
 

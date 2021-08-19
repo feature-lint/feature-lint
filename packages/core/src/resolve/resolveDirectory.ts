@@ -3,10 +3,10 @@ import * as fs from "fs";
 import { buildUniqueBuildingBlockName } from "./operations/buildUniqueBuildingBlockName.js";
 import { ResolveResult } from "./model/ResolveResult.js";
 import { buildPathHierachy as buildPathHierarchy } from "./util/buildPathHierachy.js";
-import { getOrCreateRootFeature } from "./getOrCreateRootFeature";
-import { getOrCreateChildFeature } from "./getOrCreateChildFeature";
-import { getOrCreateBuildingBlock } from "./getOrCreateBuildingBlock";
-import { ResolveState } from "./model/ResolveState";
+import { getOrCreateRootFeature } from "./getOrCreateRootFeature.js";
+import { getOrCreateChildFeature } from "./getOrCreateChildFeature.js";
+import { getOrCreateBuildingBlock } from "./getOrCreateBuildingBlock.js";
+import { ResolveState } from "./model/ResolveState.js";
 import { ResolvedFeature } from "./model/ResolvedFeature.js";
 
 export function resolveDirectory(
