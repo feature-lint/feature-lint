@@ -1,5 +1,12 @@
 # @feature-lint/core
 
+## 0.0.13
+
+### Patch Changes
+
+- 79363c7: Add restricted-external-modules rule
+- 9432ff7: Add no-ancestor-feature-dependency rule
+
 ## 0.0.12
 
 ### Patch Changes
