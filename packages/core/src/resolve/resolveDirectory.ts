@@ -153,8 +153,7 @@ export function resolveDirectory(
         continue;
       }
 
-      // TODO: Read features folder name from config
-      if (directoryName === "features") {
+      if (directoryName === resolveResult.resolvedRoot.config.featuresDirName) {
         const siblingFeaturePrivate: ResolvedFeature | undefined = fs
           .lstatSync(path.join(hierarchyPath, "public"), {
             throwIfNoEntry: false,

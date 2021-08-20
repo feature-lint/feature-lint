@@ -35,6 +35,8 @@ export const FeatureLintConfig = z.object({
 
   rootDir: z.string().min(1).optional(),
 
+  featuresDirName: z.string().min(1).optional().default("features"),
+
   defaultFeatureType: FeatureTypeName.optional(),
 
   featureTypes: FeatureTypes,
