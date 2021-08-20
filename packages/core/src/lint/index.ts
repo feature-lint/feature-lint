@@ -1,1 +1,1 @@
-export { lint } from "./lint.js";
+export { lint, resolveOnly } from "./lint.js";
