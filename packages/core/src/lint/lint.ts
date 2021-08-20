@@ -26,7 +26,11 @@ export const lint = (directoryPath: string) => {
   try {
     lintResult = lint2(directoryPath);
   } catch (e) {
-    lintResult = Failure(UnexpectedFeatureLintError(e.toString()));
+    if (e instanceof Error) {
+      lintResult = Failure(UnexpectedFeatureLintError(e));
+    } else {
+      lintResult = Failure(UnexpectedFeatureLintError(new Error(`${e}`)));
+    }
   }
 
   if (!lintResult.successful) {

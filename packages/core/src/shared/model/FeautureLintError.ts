@@ -22,9 +22,7 @@ export const GenericFeatureLintError = (
   };
 };
 
-export const UnexpectedFeatureLintError = (
-  message: string
-): FeatureLintError => {
+export const UnexpectedFeatureLintError = (error: Error): FeatureLintError => {
   return {
     type: "generic",
 
@@ -32,8 +30,12 @@ export const UnexpectedFeatureLintError = (
       return printViolationLikeTemplate(
         printer,
         "unexpected-error",
-        message,
-        () => {}
+        error.message,
+        () => {
+          if (error.stack !== undefined) {
+            printer.text`${error.stack}`;
+          }
+        }
       );
     },
   };
