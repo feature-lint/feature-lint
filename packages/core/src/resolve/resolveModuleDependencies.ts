@@ -80,7 +80,8 @@ export function resolveModuleDependencies(
 
       if (
         "featureName" in resolvedModule &&
-        "featureName" in resolvedDependencyModule
+        "featureName" in resolvedDependencyModule &&
+        resolvedModule.featureName !== resolvedDependencyModule.featureName
       ) {
         const resolvedFeature = getResolvedFeature(
           resolveResult,
