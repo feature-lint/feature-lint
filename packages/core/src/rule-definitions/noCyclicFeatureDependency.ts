@@ -202,6 +202,11 @@ export const detectCycles = (
   const allCycles = new Set<string[]>();
 
   for (const [rootVertex, vertexSet] of stronglyConnectedComponents.entries()) {
+    // Ignore trivial strongly connected components
+    if (vertexSet.size === 1) {
+      continue;
+    }
+
     computeElementaryCycles(
       rootVertex,
       Array.from(vertexSet),
