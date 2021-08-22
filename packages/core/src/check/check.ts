@@ -6,6 +6,7 @@ import { ResolveResult } from "../resolve/model/ResolveResult.js";
 import { getResolvedBuildingBlock } from "../resolve/operations/getResolvedBuildingBlock.js";
 import { getResolvedFeature } from "../resolve/operations/getResolvedFeature.js";
 import { getResolvedModule } from "../resolve/operations/getResolvedModule.js";
+import { resolve } from "../resolve/resolve.js";
 import { RuleConfigByScope } from "../rule/model/RuleDefinition.js";
 import { RuleScope, RULE_SCOPES } from "../rule/model/RuleScope.js";
 
@@ -222,6 +223,11 @@ const getBuildingBlockRuleConfigByRuleNameAndRuleScope = (
     root: getRootRuleConfigs(resolveResult),
     featureType: getFeatureTypeRuleConfigs(resolveResult, featureName),
     feature: getFeatureRuleConfigs(resolveResult, featureName),
+    buildingBlock: getBuildingBlockRuleConfigs(
+      resolveResult,
+      featureName,
+      buildingBlockName
+    ),
   });
 };
 
