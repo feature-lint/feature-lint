@@ -7,6 +7,18 @@ import { Violation } from "../rule/model/Violation.js";
 import { ViolationPrinter } from "../rule/model/ViolationPrinter.js";
 import { printImportOrExportOfDependency } from "../rule/print/printImportOrExportOfDependency.js";
 import { printViolationTemplate } from "../rule/print/printViolationTemplate.js";
+import { z } from "zod";
+import {
+  createDefaultRuleConfig,
+  createDefaultRuleConfigSchema,
+} from "../rule/operations/createDefaultRuleConfigSchema.js";
+import { isRuleEnabled } from "../rule/operations/isRuleEnabled.js";
+
+const RULE_NAME = "restricted-visibility";
+
+const RuleConfig = createDefaultRuleConfigSchema(RULE_NAME);
+
+type RuleConfig = z.infer<typeof RuleConfig>;
 
 type VisibilityType =
   | "buildingBlock"
@@ -129,14 +141,24 @@ const restrictedVisibilityViolationPrinter: ViolationPrinter<RestrictedVisibilit
   };
 
 export const restrictedVisibilityRuleDefinition: BuildingBlockModuleRuleDefinition<
-  {},
+  typeof RuleConfig,
   RestrictedVisibilityViolationData
 > = {
-  name: "restricted-visibility",
+  name: RULE_NAME,
 
   type: "buildingBlockModule",
 
+  configSchemaByScope: {
+    root: RuleConfig,
+  },
+
+  defaultConfig: createDefaultRuleConfig(RULE_NAME),
+
   evaluate: (ruleConfigByScope, resolveResult, module) => {
+    if (!isRuleEnabled(ruleConfigByScope)) {
+      return [];
+    }
+
     const violations: Violation<RestrictedVisibilityViolationData>[] = [];
 
     for (const moduleFilePath of module.dependencyModuleFilePaths) {
@@ -160,8 +182,7 @@ export const restrictedVisibilityRuleDefinition: BuildingBlockModuleRuleDefiniti
         if (dependencyModule.featureName === module.featureName) {
           if (dependencyModule.buildingBlockPrivate) {
             return {
-              ruleScope: "root",
-              ruleName: "restricted-visibility",
+              ruleName: RULE_NAME,
               severity: "error",
               data: {
                 violatingModule: module,
@@ -189,8 +210,7 @@ export const restrictedVisibilityRuleDefinition: BuildingBlockModuleRuleDefiniti
             dependencyModule.buildingBlockPrivate
           ) {
             return {
-              ruleScope: "root",
-              ruleName: "restricted-visibility",
+              ruleName: RULE_NAME,
               severity: "error",
               data: {
                 violatingModule: module,
@@ -229,8 +249,7 @@ export const restrictedVisibilityRuleDefinition: BuildingBlockModuleRuleDefiniti
         }
 
         return {
-          ruleScope: "root",
-          ruleName: "restricted-visibility",
+          ruleName: RULE_NAME,
           severity: "error",
           data: {
             violatingModule: module,
@@ -264,8 +283,7 @@ export const restrictedVisibilityRuleDefinition: BuildingBlockModuleRuleDefiniti
         }
 
         return {
-          ruleScope: "root",
-          ruleName: "restricted-visibility",
+          ruleName: RULE_NAME,
           severity: "error",
           data: {
             violatingModule: module,

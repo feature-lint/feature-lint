@@ -1,8 +1,28 @@
-import { printViolationTemplate } from "../rule/print/printViolationTemplate.js";
-import { ViolationPrinter } from "../rule/model/ViolationPrinter.js";
+import { z } from "zod";
 import { ResolvedFeature } from "../resolve/model/ResolvedFeature.js";
-import { FeatureRuleDefinition } from "../rule/model/RuleDefinition.js";
+import {
+  FeatureRuleDefinition,
+  RuleConfigByScope,
+} from "../rule/model/RuleDefinition.js";
+import {
+  RuleScope,
+  RULE_SCOPE_DEFAULT_PRECEDENCE,
+} from "../rule/model/RuleScope.js";
 import { Violation } from "../rule/model/Violation.js";
+import { ViolationPrinter } from "../rule/model/ViolationPrinter.js";
+import {
+  createDefaultRuleConfig,
+  createDefaultRuleConfigSchema,
+  DefaultRuleConfig,
+} from "../rule/operations/createDefaultRuleConfigSchema.js";
+import { isRuleEnabled } from "../rule/operations/isRuleEnabled.js";
+import { printViolationTemplate } from "../rule/print/printViolationTemplate.js";
+
+const RULE_NAME = "no-missing-feature-types";
+
+const RuleConfig = createDefaultRuleConfigSchema(RULE_NAME);
+
+type RuleConfig = z.infer<typeof RuleConfig>;
 
 export interface NoMissingFeatureTypesViolationData {
   featureName: string;
@@ -12,9 +32,8 @@ export const createNoMissingFeatureTypesViolation = (
   featureName: string
 ): Violation<NoMissingFeatureTypesViolationData> => {
   return {
-    ruleName: "no-missing-feature-types",
+    ruleName: RULE_NAME,
     severity: "error",
-    ruleScope: "feature",
     data: {
       featureName,
     },
@@ -51,14 +70,24 @@ export const checkMissingFeatureType = (
 };
 
 export const noMissingFeatureTypesRuleDefinition: FeatureRuleDefinition<
-  {},
+  typeof RuleConfig,
   NoMissingFeatureTypesViolationData
 > = {
-  name: "no-missing-feature-types",
+  name: RULE_NAME,
 
   type: "feature",
 
-  evaluate: (ruleConfig, resolveResult, resolvedFeature) => {
+  configSchemaByScope: {
+    root: RuleConfig,
+  },
+
+  defaultConfig: createDefaultRuleConfig(RULE_NAME),
+
+  evaluate: (ruleConfigByScope, resolveResult, resolvedFeature) => {
+    if (!isRuleEnabled(ruleConfigByScope)) {
+      return [];
+    }
+
     if (checkMissingFeatureType(resolvedFeature)) {
       return [createNoMissingFeatureTypesViolation(resolvedFeature.name)];
     }

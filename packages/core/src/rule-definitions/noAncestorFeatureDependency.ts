@@ -8,8 +8,20 @@ import { getResolvedModule } from "../resolve/operations/getResolvedModule.js";
 import { BuildingBlockModuleRuleDefinition } from "../rule/model/RuleDefinition.js";
 import { Violation } from "../rule/model/Violation.js";
 import { ViolationPrinter } from "../rule/model/ViolationPrinter.js";
+import {
+  createDefaultRuleConfig,
+  createDefaultRuleConfigSchema,
+} from "../rule/operations/createDefaultRuleConfigSchema.js";
 import { printImportOrExportOfDependency } from "../rule/print/printImportOrExportOfDependency.js";
 import { printViolationTemplate } from "../rule/print/printViolationTemplate.js";
+import { z } from "zod";
+import { isRuleEnabled } from "../rule/operations/isRuleEnabled.js";
+
+const RULE_NAME = "no-ancestor-feature-dependency";
+
+const RuleConfig = createDefaultRuleConfigSchema(RULE_NAME);
+
+type RuleConfig = z.infer<typeof RuleConfig>;
 
 export interface NoAncestorFeatureDependencyViolationData {
   violatingModule: ResolvedBuildingBlockModule | ResolvedFeatureModule;
@@ -29,14 +41,24 @@ const noAncestorFeatureDependencyViolationPrinter: ViolationPrinter<NoAncestorFe
   };
 
 export const noAncestorFeatureDependencyRuleDefinition: BuildingBlockModuleRuleDefinition<
-  {},
+  typeof RuleConfig,
   NoAncestorFeatureDependencyViolationData
 > = {
   name: "no-ancestor-feature-dependency",
 
   type: "buildingBlockModule",
 
-  evaluate: (ruleConfig, resolveResult, resolvedModule) => {
+  configSchemaByScope: {
+    root: RuleConfig,
+  },
+
+  defaultConfig: createDefaultRuleConfig(RULE_NAME),
+
+  evaluate: (ruleConfigByScope, resolveResult, resolvedModule) => {
+    if (!isRuleEnabled(ruleConfigByScope)) {
+      return [];
+    }
+
     const violations: Violation<NoAncestorFeatureDependencyViolationData>[] =
       [];
 
@@ -69,8 +91,7 @@ export const noAncestorFeatureDependencyRuleDefinition: BuildingBlockModuleRuleD
       }
 
       const violation: Violation<NoAncestorFeatureDependencyViolationData> = {
-        ruleName: "no-ancestor-feature-dependency",
-        ruleScope: "feature",
+        ruleName: RULE_NAME,
         severity: "error",
         data: {
           violatingModule: resolvedModule,

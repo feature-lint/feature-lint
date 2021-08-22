@@ -5,9 +5,11 @@ import { FinalDependencyCriterion } from "./FinalDependencyCriterion.js";
 export interface DependenciesViolationData {
   violatingModule: ResolvedBuildingBlockModule;
 
+  violatingScope: ViolationScope;
+
   violatedModule: ResolvedBuildingBlockModule;
 
-  violationScope: ViolationScope;
+  violatedScope: ViolationScope;
 
   denyCriterion: FinalDependencyCriterion | undefined;
 }

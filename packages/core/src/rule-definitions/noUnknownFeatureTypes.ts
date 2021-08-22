@@ -4,6 +4,18 @@ import { ResolvedFeature } from "../resolve/model/ResolvedFeature.js";
 import { ResolveResult } from "../resolve/model/ResolveResult.js";
 import { FeatureRuleDefinition } from "../rule/model/RuleDefinition.js";
 import { Violation } from "../rule/model/Violation.js";
+import {
+  createDefaultRuleConfig,
+  createDefaultRuleConfigSchema,
+} from "../rule/operations/createDefaultRuleConfigSchema.js";
+import { z } from "zod";
+import { isRuleEnabled } from "../rule/operations/isRuleEnabled.js";
+
+const RULE_NAME = "no-unknown-feature-types";
+
+const RuleConfig = createDefaultRuleConfigSchema(RULE_NAME);
+
+type RuleConfig = z.infer<typeof RuleConfig>;
 
 export interface NoUnknownFeatureTypesViolationData {
   featureName: string;
@@ -15,9 +27,8 @@ export const createNoUnknownFeatureTypeViolation = (
   unknownFeatureTypeName: string
 ): Violation<NoUnknownFeatureTypesViolationData> => {
   return {
-    ruleName: "no-unknown-feature-types",
+    ruleName: RULE_NAME,
     severity: "error",
-    ruleScope: "feature",
     data: {
       featureName,
       unknownFeatureTypeName,
@@ -66,14 +77,24 @@ export const checkUnknownFeatureType = (
 };
 
 export const noUnknownFeatureTypesRuleDefinition: FeatureRuleDefinition<
-  {},
+  typeof RuleConfig,
   NoUnknownFeatureTypesViolationData
 > = {
-  name: "no-unknown-feature-types",
+  name: RULE_NAME,
 
   type: "feature",
 
-  evaluate: (ruleConfig, resolveResult, resolvedFeature) => {
+  configSchemaByScope: {
+    root: RuleConfig,
+  },
+
+  defaultConfig: createDefaultRuleConfig(RULE_NAME),
+
+  evaluate: (ruleConfigByScope, resolveResult, resolvedFeature) => {
+    if (!isRuleEnabled(ruleConfigByScope)) {
+      return [];
+    }
+
     if (!checkUnknownFeatureType(resolveResult, resolvedFeature)) {
       return [];
     }

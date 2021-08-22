@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { BUILDING_BLOCK_CONFIG_RULE_SCHEMA } from "../../registry/ruleRegistry.js";
+import { BUILDING_BLOCK_RULE_CONFIG_SCHEMA } from "../../registry/ruleRegistry.js";
 import { BuildingBlockName } from "./BuildingBlockName.js";
 
 export const UnnamedBuildingBlockConfig = z.object({
-  rules: z.array(BUILDING_BLOCK_CONFIG_RULE_SCHEMA).optional().default([]),
+  rules: z.array(BUILDING_BLOCK_RULE_CONFIG_SCHEMA).optional().default([]),
 });
 
 export const BuildingBlockConfig = UnnamedBuildingBlockConfig.extend({

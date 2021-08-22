@@ -8,6 +8,7 @@ import { FinalDependencyCriterion } from "../model/FinalDependencyCriterion.js";
 import {
   DEFAULT_VIOLATION_SCOPE,
   getViolationScopeFromCriterion,
+  ViolationScope,
 } from "./getViolationScopeFromCriterion.js";
 import { checkRuleScopeCriteria } from "./checkRuleScopeCriteria.js";
 import { DependenciesViolationData } from "../model/DependenciesViolationData.js";
@@ -66,12 +67,14 @@ export function checkCriteria(
     if (denyCriterion !== undefined) {
       return {
         ruleName: "dependencies",
-        ruleScope,
         severity: "error",
         data: {
           violatingModule: dependentModule,
 
-          violationScope:
+          violatingScope:
+            ruleScope === "root" ? DEFAULT_VIOLATION_SCOPE : ruleScope,
+
+          violatedScope:
             denyCriterion !== undefined
               ? getViolationScopeFromCriterion(denyCriterion)
               : DEFAULT_VIOLATION_SCOPE,
@@ -94,14 +97,15 @@ export function checkCriteria(
 
   return {
     ruleName: "dependencies",
-    ruleScope: ruleScopeOrder.find(
-      (ruleScope) => ruleConfigByScope[ruleScope] !== undefined
-    ) as RuleScope,
     severity: "error",
     data: {
       violatingModule: dependentModule,
 
-      violationScope: DEFAULT_VIOLATION_SCOPE,
+      violatingScope: ruleScopeOrder.find(
+        (ruleScope) => ruleConfigByScope[ruleScope] !== undefined
+      ) as ViolationScope,
+
+      violatedScope: DEFAULT_VIOLATION_SCOPE,
 
       violatedModule: dependencyModule,
 

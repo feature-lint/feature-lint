@@ -4,8 +4,20 @@ import { getResolvedModule } from "../resolve/operations/getResolvedModule.js";
 import { RootRuleDefinition } from "../rule/model/RuleDefinition.js";
 import { Violation } from "../rule/model/Violation.js";
 import { ViolationPrinter } from "../rule/model/ViolationPrinter.js";
+import {
+  createDefaultRuleConfig,
+  createDefaultRuleConfigSchema,
+} from "../rule/operations/createDefaultRuleConfigSchema.js";
 import { printImportOrExportOfDependency } from "../rule/print/printImportOrExportOfDependency.js";
 import { printViolationTemplate } from "../rule/print/printViolationTemplate.js";
+import { z } from "zod";
+import { isRuleEnabled } from "../rule/operations/isRuleEnabled.js";
+
+const RULE_NAME = "no-cyclic-feature-dependency";
+
+const RuleConfig = createDefaultRuleConfigSchema(RULE_NAME);
+
+type RuleConfig = z.infer<typeof RuleConfig>;
 
 interface CycleFeature {
   featureName: string;
@@ -105,14 +117,24 @@ const noCyclicFeatureDependencyViolationPrinter: ViolationPrinter<NoCyclicFeatur
   };
 
 export const noCyclicFeatureDependencyRuleDefinition: RootRuleDefinition<
-  {},
+  typeof RuleConfig,
   NoCyclicFeatureDependencyViolationData
 > = {
-  name: "no-cyclic-feature-dependency",
+  name: RULE_NAME,
 
   type: "root",
 
-  evaluate: (ruleConfig, resolveResult) => {
+  configSchemaByScope: {
+    root: RuleConfig,
+  },
+
+  defaultConfig: createDefaultRuleConfig(RULE_NAME),
+
+  evaluate: (ruleConfigByScope, resolveResult) => {
+    if (!isRuleEnabled(ruleConfigByScope)) {
+      return [];
+    }
+
     const featureNames = Array.from(resolveResult.resolvedFeatureByName.keys());
 
     const getFeatureDependencies = (featureName: string): string[] => {
@@ -173,8 +195,7 @@ export const noCyclicFeatureDependencyRuleDefinition: RootRuleDefinition<
       });
 
       const violation: Violation<NoCyclicFeatureDependencyViolationData> = {
-        ruleName: "no-cyclic-feature-dependency",
-        ruleScope: "root",
+        ruleName: RULE_NAME,
         severity: "error",
         data: {
           cycle: cyclesFeatures,

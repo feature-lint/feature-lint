@@ -1,14 +1,22 @@
+import { z } from "zod";
 import { getResolvedFeature } from "../resolve/operations/getResolvedFeature.js";
-import { BuildingBlockName } from "../config/model/BuildingBlockName.js";
-import { printViolationTemplate } from "../rule/print/printViolationTemplate.js";
+import { BuildingBlockRuleDefinition } from "../rule/model/RuleDefinition.js";
+import { Violation } from "../rule/model/Violation.js";
 import { ViolationPrinter } from "../rule/model/ViolationPrinter.js";
 import {
-  BuildingBlockRuleDefinition,
-  FeatureRuleDefinition,
-} from "../rule/model/RuleDefinition.js";
-import { Violation } from "../rule/model/Violation.js";
+  createDefaultRuleConfig,
+  createDefaultRuleConfigSchema,
+} from "../rule/operations/createDefaultRuleConfigSchema.js";
+import { isRuleEnabled } from "../rule/operations/isRuleEnabled.js";
+import { printViolationTemplate } from "../rule/print/printViolationTemplate.js";
 import { checkMissingFeatureType } from "./noMissingFeatureTypes.js";
 import { checkUnknownFeatureType } from "./noUnknownFeatureTypes.js";
+
+const RULE_NAME = "no-unknown-building-blocks";
+
+const RuleConfig = createDefaultRuleConfigSchema(RULE_NAME);
+
+type RuleConfig = z.infer<typeof RuleConfig>;
 
 export interface NoUnknownBuildingBlocksViolationData {
   featureName: string;
@@ -22,7 +30,6 @@ export const createNoUnknownBuildingBlockViolation = (
   return {
     ruleName: "no-unknown-building-blocks",
     severity: "error",
-    ruleScope: "feature",
     data: {
       featureName,
       unknownBuildingBlockName,
@@ -57,14 +64,24 @@ const noUnknownBuildingBlocksViolationPrinter: ViolationPrinter<NoUnknownBuildin
   };
 
 export const noUnknownBuildingBlocksRuleDefinition: BuildingBlockRuleDefinition<
-  {},
+  typeof RuleConfig,
   NoUnknownBuildingBlocksViolationData
 > = {
-  name: "no-unknown-building-blocks",
+  name: RULE_NAME,
 
   type: "buildingBlock",
 
-  evaluate: (ruleConfig, resolveResult, resolvedBuildingBlock) => {
+  configSchemaByScope: {
+    root: RuleConfig,
+  },
+
+  defaultConfig: createDefaultRuleConfig(RULE_NAME),
+
+  evaluate: (ruleConfigByScope, resolveResult, resolvedBuildingBlock) => {
+    if (!isRuleEnabled(ruleConfigByScope)) {
+      return [];
+    }
+
     const resolvedFeature = getResolvedFeature(
       resolveResult,
       resolvedBuildingBlock.featureName

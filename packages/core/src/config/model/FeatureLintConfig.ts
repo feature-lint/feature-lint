@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { ROOT_CONFIG_RULE_SCHEMA } from "../../registry/ruleRegistry.js";
+import {
+  ROOT_RULE_CONFIG_SCHEMA,
+  RULE_DEFINITIONS,
+} from "../../registry/ruleRegistry.js";
+import { createDefaultRuleConfig } from "../../rule/operations/createDefaultRuleConfigSchema.js";
 import {
   UnnamedFeatureTypeConfig,
   FeatureTypeConfig,
@@ -41,7 +45,32 @@ export const FeatureLintConfig = z.object({
 
   featureTypes: FeatureTypes,
 
-  rules: z.array(ROOT_CONFIG_RULE_SCHEMA).optional().default([]),
+  rules: z
+    .array(ROOT_RULE_CONFIG_SCHEMA)
+    .optional()
+    .default([])
+    // We are adding all default rules configs here (unless they configured by the user already)
+    .transform((rawRuleConfigs) => {
+      const ruleConfigs = [...rawRuleConfigs];
+
+      for (const ruleDefinition of RULE_DEFINITIONS) {
+        if (ruleDefinition.defaultConfig === undefined) {
+          continue;
+        }
+
+        const alreadyConfigured = rawRuleConfigs.some((ruleConfig) => {
+          return ruleConfig.name === ruleDefinition.name;
+        });
+
+        if (alreadyConfigured) {
+          continue;
+        }
+
+        ruleConfigs.push(ruleDefinition.defaultConfig);
+      }
+
+      return ruleConfigs;
+    }),
 });
 // .refine(
 //   (featureLintConfig) => {
