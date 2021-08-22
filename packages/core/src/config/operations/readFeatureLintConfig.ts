@@ -1,14 +1,12 @@
 import * as fs from "fs";
-import { FeatureLintConfig } from "../model/FeatureLintConfig.js";
 import { parse as parseJsonc, ParseError } from "jsonc-parser";
-import { ZodError } from "zod";
-import { Result, Success, Failure } from "../../shared/util/Result.js";
 import {
   FeatureLintError,
   GenericFeatureLintError,
-  UnexpectedFeatureLintError,
   ZodFeatureLintError,
 } from "../../shared/model/FeautureLintError.js";
+import { Failure, Result, Success } from "../../shared/util/Result.js";
+import { FeatureLintConfig } from "../model/FeatureLintConfig.js";
 
 export function readFeatureLintConfig(
   configFilePath: string

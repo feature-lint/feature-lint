@@ -6,6 +6,7 @@ import { Printer } from "../printer/service/Printer.js";
 import { VIOLATION_PRINTER } from "../registry/violationPrinterRegistry.js";
 import { ResolvedFeature } from "../resolve/model/ResolvedFeature.js";
 import { ResolveResult } from "../resolve/model/ResolveResult.js";
+import { ResolveState } from "../resolve/model/ResolveState.js";
 import { findRootDirectoryPath } from "../resolve/operations/findRootDirectoryPath.js";
 import { resolve } from "../resolve/resolve.js";
 import {
@@ -26,7 +27,11 @@ export const lint = (directoryPath: string) => {
   try {
     lintResult = lint2(directoryPath);
   } catch (e) {
-    lintResult = Failure(UnexpectedFeatureLintError(e.toString()));
+    if (e instanceof Error) {
+      lintResult = Failure(UnexpectedFeatureLintError(e));
+    } else {
+      lintResult = Failure(UnexpectedFeatureLintError(new Error(`${e}`)));
+    }
   }
 
   if (!lintResult.successful) {
@@ -44,6 +49,45 @@ export const lint = (directoryPath: string) => {
   }
 
   render(lintResult.data);
+};
+
+export const resolveOnly = (directoryPath: string): ResolveResult => {
+  const configFilePath = findFeatureLintConfigFilePath(directoryPath);
+
+  if (configFilePath === undefined) {
+    throw new Error("Failed");
+  }
+
+  const featureLintConfigResult = readFeatureLintConfig(configFilePath);
+
+  if (!featureLintConfigResult.successful) {
+    throw new Error("Failed");
+  }
+
+  const featureLintConfig = featureLintConfigResult.data;
+
+  const rootDirectoryPathResult = findRootDirectoryPath(
+    featureLintConfig,
+    configFilePath
+  );
+
+  if (!rootDirectoryPathResult.successful) {
+    throw new Error("Failed");
+  }
+
+  const rootDirectoryPath = rootDirectoryPathResult.data;
+
+  const resolveResult = resolve(
+    featureLintConfig,
+    configFilePath,
+    rootDirectoryPath
+  );
+
+  if (!resolveResult.successful) {
+    throw new Error("Failed");
+  }
+
+  return resolveResult.data;
 };
 
 // TODO: Move of some of this to CLI

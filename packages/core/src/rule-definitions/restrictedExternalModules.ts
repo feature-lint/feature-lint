@@ -2,10 +2,7 @@ import { z } from "zod";
 import {
   ExternalModule,
   ResolvedBuildingBlockModule,
-  ResolvedFeatureModule,
-  ResolvedModule,
 } from "../resolve/model/ResolvedModule.js";
-import { ResolveResult } from "../resolve/model/ResolveResult.js";
 import { getResolvedFeature } from "../resolve/operations/getResolvedFeature.js";
 import {
   BuildingBlockModuleRuleDefinition,
@@ -73,12 +70,19 @@ export interface RestrictedExternalModulesViolationData {
 }
 
 export const restrictedExternalModulesRuleDefinition: BuildingBlockModuleRuleDefinition<
-  RestrictedExternalModulesRuleConfig,
+  typeof RestrictedExternalModulesRuleConfig,
   RestrictedExternalModulesViolationData
 > = {
   name: "restricted-external-modules",
 
   type: "buildingBlockModule",
+
+  configSchemaByScope: {
+    root: RestrictedExternalModulesRuleConfig,
+    featureType: RestrictedExternalModulesRuleConfig,
+    feature: RestrictedExternalModulesRuleConfig,
+    buildingBlock: RestrictedExternalModulesRuleConfig,
+  },
 
   evaluate: (ruleConfigByScope, resolveResult, resolvedModule) => {
     const violations: Violation<RestrictedExternalModulesViolationData>[] = [];
@@ -130,7 +134,6 @@ export const restrictedExternalModulesRuleDefinition: BuildingBlockModuleRuleDef
 
       return {
         ruleName: "restricted-external-modules",
-        ruleScope: denyCriterionAndRuleScope[1],
         severity: "error",
         data: {
           violatingModule: resolvedModule,

@@ -4,7 +4,6 @@ import { FeatureLintConfig } from "../../config/model/FeatureLintConfig.js";
 import {
   FeatureLintError,
   GenericFeatureLintError,
-  UnexpectedFeatureLintError,
 } from "../../shared/model/FeautureLintError.js";
 import { Failure, Result, Success } from "../../shared/util/Result.js";
 import { isSubPath } from "../util/isSubPath.js";

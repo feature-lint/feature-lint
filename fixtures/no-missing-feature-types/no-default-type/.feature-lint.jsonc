@@ -1,5 +1,5 @@
 {
-  "$schema": "../../../../packages/schema/dist/feature-lint.schema.json",
+  "$schema": "../../../packages/schema/dist/feature-lint.schema.json",
 
   "rootDir": "./src",
 

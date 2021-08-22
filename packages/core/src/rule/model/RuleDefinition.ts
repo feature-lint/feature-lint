@@ -5,6 +5,7 @@ import { ResolveResult } from "../../resolve/model/ResolveResult.js";
 import { RuleScope } from "./RuleScope.js";
 import { Violation } from "./Violation.js";
 import { ViolationPrinter } from "./ViolationPrinter.js";
+import { z, ZodType } from "zod";
 
 export type RuleDefinitionType =
   | "root"
@@ -12,18 +13,28 @@ export type RuleDefinitionType =
   | "buildingBlock"
   | "buildingBlockModule";
 
-export type RuleDefinition<RULE_CONFIG, VIOLATION_DATA> =
-  | RootRuleDefinition<RULE_CONFIG, VIOLATION_DATA>
-  | FeatureRuleDefinition<RULE_CONFIG, VIOLATION_DATA>
-  | BuildingBlockRuleDefinition<RULE_CONFIG, VIOLATION_DATA>
-  | BuildingBlockModuleRuleDefinition<RULE_CONFIG, VIOLATION_DATA>;
+export type RuleDefinition<
+  RULE_CONFIG_SCHEMA extends ZodType<any>,
+  VIOLATION_DATA
+> =
+  | RootRuleDefinition<RULE_CONFIG_SCHEMA, VIOLATION_DATA>
+  | FeatureRuleDefinition<RULE_CONFIG_SCHEMA, VIOLATION_DATA>
+  | BuildingBlockRuleDefinition<RULE_CONFIG_SCHEMA, VIOLATION_DATA>
+  | BuildingBlockModuleRuleDefinition<RULE_CONFIG_SCHEMA, VIOLATION_DATA>;
 
-export interface BaseRuleDefinition<VIOLATION_DATA> {
+export interface BaseRuleDefinition<
+  RULE_CONFIG_SCHEMA extends ZodType<any>,
+  VIOLATION_DATA
+> {
   type: RuleDefinitionType;
 
   name: string;
 
   printViolation: ViolationPrinter<VIOLATION_DATA>;
+
+  configSchemaByScope: RuleConfigSchemaByScope<RULE_CONFIG_SCHEMA>;
+
+  defaultConfig?: z.infer<RULE_CONFIG_SCHEMA> | undefined;
 }
 
 export type RuleConfigByScope<
@@ -31,47 +42,61 @@ export type RuleConfigByScope<
   RULE_SCOPE extends RuleScope = RuleScope
 > = Partial<Record<RULE_SCOPE, RULE_CONFIG>>;
 
-export interface RootRuleDefinition<RULE_CONFIG, VIOLATION_DATA>
-  extends BaseRuleDefinition<VIOLATION_DATA> {
+export type RuleConfigSchemaByScope<
+  RULE_CONFIG_SCHEMA extends ZodType<any>,
+  RULE_SCOPE extends RuleScope = RuleScope
+> = Partial<Record<RULE_SCOPE, RULE_CONFIG_SCHEMA>>;
+
+export interface RootRuleDefinition<
+  RULE_CONFIG_SCHEMA extends ZodType<any>,
+  VIOLATION_DATA
+> extends BaseRuleDefinition<RULE_CONFIG_SCHEMA, VIOLATION_DATA> {
   type: "root";
 
   evaluate: (
-    ruleConfigByScope: RuleConfigByScope<RULE_CONFIG, "root">,
+    ruleConfigByScope: RuleConfigByScope<z.infer<RULE_CONFIG_SCHEMA>, "root">,
     resolveResult: ResolveResult
   ) => Violation<VIOLATION_DATA>[];
 }
 
-export interface BuildingBlockModuleRuleDefinition<RULE_CONFIG, VIOLATION_DATA>
-  extends BaseRuleDefinition<VIOLATION_DATA> {
-  type: "buildingBlockModule";
-
-  evaluate: (
-    ruleConfigByScope: RuleConfigByScope<RULE_CONFIG>,
-    resolveResult: ResolveResult,
-    module: ResolvedBuildingBlockModule
-  ) => Violation<VIOLATION_DATA>[];
-}
-
-export interface FeatureRuleDefinition<RULE_CONFIG, VIOLATION_DATA>
-  extends BaseRuleDefinition<VIOLATION_DATA> {
+export interface FeatureRuleDefinition<
+  RULE_CONFIG_SCHEMA extends ZodType<any>,
+  VIOLATION_DATA
+> extends BaseRuleDefinition<RULE_CONFIG_SCHEMA, VIOLATION_DATA> {
   type: "feature";
 
   evaluate: (
-    // TODO: Should use RuleConfigByScope<RULE_CONFIG>
-    ruleConfig: RULE_CONFIG,
+    ruleConfigByScope: RuleConfigByScope<
+      z.infer<RULE_CONFIG_SCHEMA>,
+      "root" | "featureType" | "feature"
+    >,
     resolveResult: ResolveResult,
     feature: ResolvedFeature
   ) => Violation<VIOLATION_DATA>[];
 }
 
-export interface BuildingBlockRuleDefinition<RULE_CONFIG, VIOLATION_DATA>
-  extends BaseRuleDefinition<VIOLATION_DATA> {
+export interface BuildingBlockRuleDefinition<
+  RULE_CONFIG_SCHEMA extends ZodType<any>,
+  VIOLATION_DATA
+> extends BaseRuleDefinition<RULE_CONFIG_SCHEMA, VIOLATION_DATA> {
   type: "buildingBlock";
 
   evaluate: (
-    // TODO: Should use RuleConfigByScope<RULE_CONFIG>
-    ruleConfig: RULE_CONFIG,
+    ruleConfigByScope: RuleConfigByScope<z.infer<RULE_CONFIG_SCHEMA>>,
     resolveResult: ResolveResult,
     buildingBlock: ResolvedBuildingBlock
+  ) => Violation<VIOLATION_DATA>[];
+}
+
+export interface BuildingBlockModuleRuleDefinition<
+  RULE_CONFIG_SCHEMA extends ZodType<any>,
+  VIOLATION_DATA
+> extends BaseRuleDefinition<RULE_CONFIG_SCHEMA, VIOLATION_DATA> {
+  type: "buildingBlockModule";
+
+  evaluate: (
+    ruleConfigByScope: RuleConfigByScope<z.infer<RULE_CONFIG_SCHEMA>>,
+    resolveResult: ResolveResult,
+    module: ResolvedBuildingBlockModule
   ) => Violation<VIOLATION_DATA>[];
 }

@@ -8,7 +8,7 @@ export function getResolvedModule(
   const module = resolveResult.resolvedModuleByFilePath.get(moduleFilePath);
 
   if (module === undefined) {
-    throw new Error("Module not found");
+    throw new Error(`Module "${moduleFilePath}" not found`);
   }
 
   return module;

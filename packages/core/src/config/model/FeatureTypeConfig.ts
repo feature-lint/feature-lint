@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { FEATURE_TYPE_CONFIG_RULE_SCHEMA } from "../../registry/ruleRegistry.js";
+import { FEATURE_TYPE_RULE_CONFIG_SCHEMA } from "../../registry/ruleRegistry.js";
 import {
   BuildingBlockConfig,
   UnnamedBuildingBlockConfig,
@@ -72,7 +72,7 @@ export const UnnamedFeatureTypeConfig = z.object({
 
       return new RegExp(rawMatcher);
     }),
-  rules: z.array(FEATURE_TYPE_CONFIG_RULE_SCHEMA).optional().default([]),
+  rules: z.array(FEATURE_TYPE_RULE_CONFIG_SCHEMA).optional().default([]),
 });
 
 export const FeatureTypeConfig = UnnamedFeatureTypeConfig.extend({

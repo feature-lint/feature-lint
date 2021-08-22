@@ -61,17 +61,17 @@ export function resolveModuleDependencies(
 
       const moduleFilepath = path.normalize(resolvedFileName);
 
-      resolvedModule?.dependencyModuleFilePaths.add(moduleFilepath);
-
-      resolvedModule?.dependencyModuleInfoByFilePath.set(moduleFilepath, {
-        tsImportOrExportDeclaration: node,
-      });
-
       const resolved = resolveFile(resolveResult, resolvedFileName);
 
       if (!resolved) {
         return;
       }
+
+      resolvedModule?.dependencyModuleFilePaths.add(moduleFilepath);
+
+      resolvedModule?.dependencyModuleInfoByFilePath.set(moduleFilepath, {
+        tsImportOrExportDeclaration: node,
+      });
 
       const resolvedDependencyModule = getResolvedModule(
         resolveResult,
@@ -80,7 +80,8 @@ export function resolveModuleDependencies(
 
       if (
         "featureName" in resolvedModule &&
-        "featureName" in resolvedDependencyModule
+        "featureName" in resolvedDependencyModule &&
+        resolvedModule.featureName !== resolvedDependencyModule.featureName
       ) {
         const resolvedFeature = getResolvedFeature(
           resolveResult,

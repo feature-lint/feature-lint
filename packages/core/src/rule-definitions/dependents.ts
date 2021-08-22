@@ -65,20 +65,28 @@ export const evaluate = (
 };
 
 export const dependentsRuleDefinition: BuildingBlockModuleRuleDefinition<
-  DependentsRuleConfig,
+  typeof DependentsRuleConfig,
   DependenciesViolationData
 > = {
   name: "dependents",
 
   type: "buildingBlockModule",
 
+  configSchemaByScope: {
+    root: DependentsRuleConfig,
+    featureType: DependentsRuleConfig,
+    feature: DependentsRuleConfig,
+    buildingBlock: DependentsRuleConfig,
+  },
+
   evaluate,
 
   printViolation: (printer, violation, resolveResult) => {
     const {
       violatingModule,
+      violatingScope,
       violatedModule,
-      violationScope: dependencyScope /* allowedDependencyNames */,
+      violatedScope: dependencyScope /* allowedDependencyNames */,
     } = violation.data;
 
     const feature = getResolvedFeature(
@@ -96,10 +104,7 @@ export const dependentsRuleDefinition: BuildingBlockModuleRuleDefinition<
     const dependencyFeatureTypeName = dependencyFeature.featureTypeName;
 
     const renderDependentMessagePart = () => {
-      switch (violation.ruleScope) {
-        case "root": {
-          throw new Error("Not supported");
-        }
+      switch (violatingScope) {
         case "featureType": {
           return printer.format`feature type {bold ${featureTypeName}}`;
         }

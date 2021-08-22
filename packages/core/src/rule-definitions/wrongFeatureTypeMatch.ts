@@ -3,6 +3,18 @@ import { FeatureRuleDefinition } from "../rule/model/RuleDefinition.js";
 import { Violation } from "../rule/model/Violation.js";
 import { ViolationPrinter } from "../rule/model/ViolationPrinter.js";
 import { printViolationTemplate } from "../rule/print/printViolationTemplate.js";
+import { z } from "zod";
+import {
+  createDefaultRuleConfig,
+  createDefaultRuleConfigSchema,
+} from "../rule/operations/createDefaultRuleConfigSchema.js";
+import { isRuleEnabled } from "../rule/operations/isRuleEnabled.js";
+
+const RULE_NAME = "wrong-feature-type-match";
+
+const RuleConfig = createDefaultRuleConfigSchema(RULE_NAME);
+
+type RuleConfig = z.infer<typeof RuleConfig>;
 
 export interface WrongFeatureTypeMatchViolationData {
   simpleFeatureName: string;
@@ -58,14 +70,24 @@ interface SimpleFeatureType {
 }
 
 export const wrongFeatureTypeMatchRuleDefinition: FeatureRuleDefinition<
-  {},
+  typeof RuleConfig,
   WrongFeatureTypeMatchViolationData
 > = {
-  name: "wrong-feature-type-match",
+  name: RULE_NAME,
 
   type: "feature",
 
-  evaluate: (ruleConfig, resolveResult, resolvedFeature) => {
+  configSchemaByScope: {
+    root: RuleConfig,
+  },
+
+  defaultConfig: createDefaultRuleConfig(RULE_NAME),
+
+  evaluate: (ruleConfigByScope, resolveResult, resolvedFeature) => {
+    if (!isRuleEnabled(ruleConfigByScope)) {
+      return [];
+    }
+
     const { featureTypeName, matchedFeatureTypeNames, simpleName, name } =
       resolvedFeature;
 
@@ -94,8 +116,7 @@ export const wrongFeatureTypeMatchRuleDefinition: FeatureRuleDefinition<
     );
 
     const violation: Violation<WrongFeatureTypeMatchViolationData> = {
-      ruleName: "wrong-feature-type-match",
-      ruleScope: "root",
+      ruleName: RULE_NAME,
       severity: "error",
       data: {
         featureName: name,
