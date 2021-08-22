@@ -1,5 +1,12 @@
 # @feature-lint/schema
 
+## 0.0.14
+
+### Patch Changes
+
+- Updated dependencies [7a2868e]
+  - @feature-lint/core@0.0.14
+
 ## 0.0.13
 
 ### Patch Changes

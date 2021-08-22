@@ -16,7 +16,7 @@ importers:
 
   packages/cli:
     specifiers:
-      '@feature-lint/core': workspace:^0.0.13
+      '@feature-lint/core': workspace:^0.0.14
       '@types/node': ^15.12.2
       typescript: 4.3.2
     dependencies:
@@ -50,7 +50,7 @@ importers:
 
   packages/schema:
     specifiers:
-      '@feature-lint/core': workspace:^0.0.13
+      '@feature-lint/core': workspace:^0.0.14
       zod-to-json-schema: file:../../vendor/zod-to-json-schema-0.6.2.tgz
     dependencies:
       '@feature-lint/core': link:../core
