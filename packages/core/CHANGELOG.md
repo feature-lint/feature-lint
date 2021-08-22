@@ -1,5 +1,11 @@
 # @feature-lint/core
 
+## 0.0.15
+
+### Patch Changes
+
+- 131a46a: Add max-modules-per-building-block rule
+
 ## 0.0.14
 
 ### Patch Changes
