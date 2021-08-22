@@ -1,5 +1,14 @@
 # @feature-lint/core
 
+## 0.0.14
+
+### Patch Changes
+
+- 7a2868e: - Allow implicit rules to be disabled via config
+  - Add simple visualization to CLI (generate DOT file)
+  - Allow features folder name to be changed
+  - Fix a few bugs
+
 ## 0.0.13
 
 ### Patch Changes
