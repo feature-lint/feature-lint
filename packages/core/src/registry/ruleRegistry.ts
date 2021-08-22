@@ -2,6 +2,7 @@ import "zod";
 import { ZodType } from "zod";
 import { dependenciesRuleDefinition } from "../rule-definitions/dependencies.js";
 import { dependentsRuleDefinition } from "../rule-definitions/dependents.js";
+import { maxModulesPerBuildingBlockRuleDefinition } from "../rule-definitions/maxModulesPerBuildingBlock.js";
 import { noAncestorFeatureDependencyRuleDefinition } from "../rule-definitions/noAncestorFeatureDependency.js";
 import { noCyclicFeatureDependencyRuleDefinition } from "../rule-definitions/noCyclicFeatureDependency.js";
 import { noMissingFeatureTypesRuleDefinition } from "../rule-definitions/noMissingFeatureTypes.js";
@@ -19,12 +20,13 @@ import { isDefined } from "../shared/util/isDefined.js";
 export const RULE_DEFINITIONS = [
   dependenciesRuleDefinition,
   dependentsRuleDefinition,
-  restrictedExternalModulesRuleDefinition,
+  maxModulesPerBuildingBlockRuleDefinition,
   noAncestorFeatureDependencyRuleDefinition,
   noCyclicFeatureDependencyRuleDefinition,
   noMissingFeatureTypesRuleDefinition,
   noUnknownBuildingBlocksRuleDefinition,
   noUnknownFeatureTypesRuleDefinition,
+  restrictedExternalModulesRuleDefinition,
   restrictedVisibilityRuleDefinition,
   wrongFeatureTypeMatchRuleDefinition,
 ] as const;
