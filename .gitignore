@@ -11,3 +11,9 @@ packages/*/dist
 .pnpm-store
 
 NOTES.md
+
+.idea
+
+# as we are using pnpm we don't need a package-lock
+package-lock.json
+yarn.lock
