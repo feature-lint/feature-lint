@@ -50,7 +50,6 @@ jobs:
           clean: false
       - name: Deployment Documentation to GH-Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
-        if: ${{ steps.changesets.outputs.published == 'true' }}
         with:
           branch: documentation-pages
           target-folder: /
