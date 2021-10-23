@@ -62,9 +62,6 @@ export const nameMatcherRuleDefinition: BuildingBlockModuleRuleDefinition<
     printViolationTemplate(printer, violation, title, () => {});
   },
   configSchemaByScope: {
-    feature: NameMatcherRuleConfigSchema,
-    featureType: NameMatcherRuleConfigSchema,
-    root: NameMatcherRuleConfigSchema,
     buildingBlock: NameMatcherRuleConfigSchema,
   },
 };
