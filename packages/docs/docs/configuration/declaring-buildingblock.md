@@ -45,7 +45,7 @@ real architectural building blocks instead of technical ones.
 
 ````
 
-This creates a new building-block type inside a feature type. The resulting folder structure may look like the follwing:
+This creates a new building-block type inside a feature type. The resulting folder structure may look like the following:
 
 ```
 package.json

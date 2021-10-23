@@ -20,8 +20,8 @@ src/
 
 I this case, the project may consist of some features beeing implemented by react(react-), some by vue(vue), and some containing
 pure javascript logic (domain). The first thing to do, is to delcare these feature types. 
-To create a feature-type, a attribute **featureTypes** have to be added to the root config. This object contains 
-diffrent keys, corresponding to the name, the feature-type shall have. Following the example from above,
+To create a feature-type, a attribute **featureTypes** has to be added to the root config. This object contains 
+different keys, corresponding to the name, the feature-type shall have. Following the example from above,
 the following configuration gets created.
 
 ````json
@@ -53,7 +53,7 @@ The next step to do is, to tell that feature-lint which folder is of which featu
 ### Option 1: Adding a name matcher for features
 By adding a `featureNameMatcher`-attribute to the declared feature-type it is possible to make feature-lint infer the 
 feature-type of a folder based on its name.
-The `featureNameMatcher`-attribute takes an RegEx expression, to determine the feature type. Using this approach,
+The `featureNameMatcher`-attribute takes an RegExpression to determine the feature type. Using this approach,
 the resulting configuration file may look like the following:
 
 ````json
@@ -62,13 +62,13 @@ the resulting configuration file may look like the following:
   "rootDir": "./src",
   "featureTypes": {
     "react": { 
-      "featureNameMatcher": "react-*" // This line was added
+      "featureNameMatcher": "react-.*" // This line was added
     },
     "angular": { 
-      "featureNameMatcher": "angular-*" // This line was added
+      "featureNameMatcher": "angular-.*" // This line was added
     },
     "domain": { 
-      "featureNameMatcher": "domain-*"// This line was added
+      "featureNameMatcher": "domain-.*"// This line was added
     }
   }
 }

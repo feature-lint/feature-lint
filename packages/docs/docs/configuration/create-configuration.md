@@ -4,9 +4,7 @@ sidebar_position: 2
 
 # Configuration File
 
-The first thing to do after installing FeatureLint is to
-create a configuration.
-
+The first thing to do after installing FeatureLint is to create a configuration.
 By default, FeatureLint scans a file called `.feature-lint.jsonc` in the root of the project.
 
 ```json
@@ -18,5 +16,5 @@ By default, FeatureLint scans a file called `.feature-lint.jsonc` in the root of
 
 This file shall contain a json object, containing two attributes:
 
-- \$schema: to specify which configuration options actually exist
+- $schema: to specify which configuration options exist
 - rootDir: This setting determines, in which folder feature-lint will ensure structure the feature-structure
