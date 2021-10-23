@@ -7,7 +7,7 @@ sidebar_position: 4
 Building-Blocks are smaller small units inside a feature. They are therefore a strict sub-part of a feature.
 To declare a building block, just add an attribute to the specified feature-type with the name of the building block.
 
-Taking the example from [before](../declaing-feature.md), you can specify different building blocks per framework.
+Taking the example from [before](./declaring-feature.md), you can specify different building blocks per framework.
 While it may be desirable to have some components and hooks abstractions inside a react-feature, angular has its own 
 concepts like services and directives.
 
