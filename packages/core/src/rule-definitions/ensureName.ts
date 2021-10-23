@@ -1,12 +1,12 @@
 import * as z from "zod";
-import { ResolvedBuildingBlockModule } from "../resolve/model/ResolvedModule";
-import { ResolveResult } from "../resolve/model/ResolveResult";
+import { ResolvedBuildingBlockModule } from "../resolve/model/ResolvedModule.js";
+import { ResolveResult } from "../resolve/model/ResolveResult.js";
 import {
   BuildingBlockModuleRuleDefinition,
   RuleConfigByScope,
-} from "../rule/model/RuleDefinition";
-import { Violation } from "../rule/model/Violation";
-import { printViolationTemplate } from "../rule/print/printViolationTemplate";
+} from "../rule/model/RuleDefinition.js";
+import { Violation } from "../rule/model/Violation.js";
+import { printViolationTemplate } from "../rule/print/printViolationTemplate.js";
 import * as path from "path";
 
 const RULE_NAME = "ensure-name";
