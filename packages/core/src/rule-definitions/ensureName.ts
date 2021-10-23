@@ -41,7 +41,7 @@ export const nameMatcherRuleDefinition: BuildingBlockModuleRuleDefinition<
           ruleName: RULE_NAME,
           data: {
             moduleName: baseName,
-            regEx: regEx || "asdas",
+            regEx: regEx,
           },
           severity: "error",
         },
