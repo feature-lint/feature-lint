@@ -107,4 +107,4 @@ This file may contain the information of the feature-type. The content of such f
 
 
 
-To get a full view of rules, which exist please consult [the rules document](./rules.md)
+To get a full view of rules, which exist please consult [the rules document](./declaring-rules.md)

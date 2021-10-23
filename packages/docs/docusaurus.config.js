@@ -5,7 +5,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 module.exports = {
   title: "Feature Lint",
   tagline: "Ensuring your projects structure",
-  url: "https://feature-lint.github.io/feature-lint/",
+  url: "https://feature-lint.github.io/",
   baseUrl: "/feature-lint/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",

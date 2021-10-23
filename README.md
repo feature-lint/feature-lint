@@ -3,6 +3,9 @@
 
 Feature lint ensures your applications' architecture is adhered to - by everyone!
 
+# Documentation
+
+The documentation is available at [feature-lint.github.io](https://feature-lint.github.io/feature-lint).
 
 # The Why
 When working in team, the most important part is to ensure everything works, as the team decides to.

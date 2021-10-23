@@ -68,5 +68,5 @@ src/
 
 With each having its own set of rules. Which is, where the real beauty of feature-lint lives.
 
-So, feel free to skip to the [the Rules document](./rules.md), where we configure dependency rules for our
+So, feel free to skip to the [the Rules document](./declaring-rules.md), where we configure dependency rules for our
 feature-types and building blocks.
