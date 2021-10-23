@@ -48,4 +48,13 @@ jobs:
           single-commit: true
           commit-message: Update pages
           clean: false
-          
+      - name: Deployment Documentation to GH-Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        if: ${{ steps.changesets.outputs.published == 'true' }}
+        with:
+          branch: documentation-pages
+          target-folder: /
+          folder: packages/docs/build/
+          single-commit: true
+          commit-message: Update pages
+          clean: false
