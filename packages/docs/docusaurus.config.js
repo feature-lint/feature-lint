@@ -7,7 +7,7 @@ module.exports = {
   tagline: "Ensuring your projects structure",
   url: "https://feature-lint.github.io/",
   baseUrl: "/feature-lint/",
-  onBrokenLinks: "throw",
+  onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "throw",
   trailingSlash: true,
   favicon: "img/favicon.ico",
@@ -38,15 +38,7 @@ module.exports = {
     footer: {
       style: "dark",
       links: [
-        {
-          title: "Docs",
-          items: [
-            {
-              label: "Documentation",
-              to: "/docs"
-            }
-          ]
-        },
+        /*
         {
           title: "Community",
           items: [
@@ -59,16 +51,9 @@ module.exports = {
         {
           title: "More",
           items: [
-            {
-              label: "Blog",
-              to: "/blog"
-            },
-            {
-              label: "GitHub",
-              href: "https://github.com/facebook/docusaurus"
-            }
+
           ]
-        }
+        }*/
       ],
       copyright: `Copyright © ${new Date().getFullYear()} Feature-Lint Built with Docusaurus.`
     },
@@ -81,17 +66,12 @@ module.exports = {
     [
       "@docusaurus/preset-classic",
       {
+        blog: false,
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
           editUrl: "https://github.com/feature-lint/feature-lint/",
           routeBasePath: "/"
-        },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          editUrl:
-            "https://github.com/feature-lint/feature-lint/"
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css")
