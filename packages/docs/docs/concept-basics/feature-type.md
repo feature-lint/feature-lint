@@ -1,7 +1,8 @@
 ---
 sidebar_position: 3
 ---
-# Building Blocks
+# Feature Type
+
 :::caution
 
 This document is under construction
