@@ -5,7 +5,8 @@ sidebar_position: 4
 # Declaring a Building Block
 
 Building-Blocks are smaller small units inside a feature. They are therefore a strict sub-part of a feature.
-To declare a building block, just add an attribute to the specified feature-type with the name of the building block.
+To declare a building block, just add an **buildingBlock** object to the specified feature-type with each keys
+beeing the name of the building block.
 
 Taking the example from [before](./declaring-feature.md), you can specify different building blocks per framework.
 While it may be desirable to have some components and hooks abstractions inside a react-feature, angular has its own 
@@ -25,26 +26,29 @@ real architectural building blocks instead of technical ones.
   "rootDir": "./src",
   "featureTypes": {
     "react": {
-      "featureNameMatcher": "react-.*"
-      "components": { // This line was added
+      "featureNameMatcher": "react-.*",
+      "buildingBlocks": {
+        "components": { // This line was added
         
-      },
-      "hooks": {
+        },
+        "hooks": {
         
+        }
       }
     },
     "angular": {
       "featureNameMatcher": "angular-.*",
-      "services": {
+      "buildingBlocks": {
+        "services": {
         
-      },
-      "components": {
+        },
+        "components": {
         
+        }
       }
     }
   }
 }
-
 ````
 
 This creates a new building-block type inside a feature type. The resulting folder structure may look like the following:
@@ -70,5 +74,5 @@ src/
 
 With each having its own set of rules. Which is, where the real beauty of feature-lint lives.
 
-So, feel free to skip to the [the Rules document](./declaring-rules.md), where we configure dependency rules for our
+So, feel free to skip to the Rule document, where we configure dependency rules for our
 feature-types and building blocks.
