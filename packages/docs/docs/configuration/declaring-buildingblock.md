@@ -24,7 +24,8 @@ real architectural building blocks instead of technical ones.
   "$schema": "https://raw.githubusercontent.com/feature-lint/feature-lint/pages/schema/feature-lint-v0.0.15.schema.json"
   "rootDir": "./src",
   "featureTypes": {
-    "react-*": { 
+    "react": {
+      "featureNameMatcher": "react-.*"
       "components": { // This line was added
         
       },
@@ -32,7 +33,8 @@ real architectural building blocks instead of technical ones.
         
       }
     },
-    "angular-*": {
+    "angular": {
+      "featureNameMatcher": "angular-.*",
       "services": {
         
       },
