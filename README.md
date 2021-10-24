@@ -1,13 +1,15 @@
 
 # Feature Lint
+[![Build](https://github.com/feature-lint/feature-lint/actions/workflows/build-and-test.yml/badge.svg?branch=master)](https://github.com/feature-lint/feature-lint/actions/workflows/build-and-test.yml)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
-Feature lint ensures your applications' architecture is adhered to - by everyone!
+Feature lint ensures your applications' structure is adhered to - by everyone!
 
 # Documentation
 
-The documentation is available at [feature-lint.github.io](https://feature-lint.github.io/feature-lint).
+The full documentation is available at [feature-lint.github.io](https://feature-lint.github.io/feature-lint).
 
-# The Why
+# Reasoning
 When working in team, the most important part is to ensure everything works, as the team decides to.
 This makes tools, which automatically check decisions, a must.
 These tools include eslint or prettier, which ensure the project is
@@ -17,38 +19,36 @@ The thing missing, is a tool, which ensures the folders are structured correctly
 dependencies beetween them. Also, from a architectural point of view, the team
 decies on specific building blocks (e.g. services, entities, repositores etc.). This is when feature lint is born.
 
-Featurelint is a tool exactly tailored for this usecase: Specify building blocks and make everyone on the team follow the rules.
+Feature-lint is a tool exactly tailored for this usecase: Specify building blocks and make everyone on the team follow the rules.
 
-# Getting started
+# Quick Start
 
 Run 
 ```sh 
-npm install --save-dev @feature-lint/cli
+npm install --save-dev @feature-lint/cli @feature-lint/core
 ```
 
-to install feature lint to your project.
-
-## Configure the project
-
-The main file of the project is a file named`.feature-lint.jsonc`.
+Create a file in the root of the project is a file named`.feature-lint.jsonc`.
 This file contains the definition of a feature and its building blocks needed.
-An example may be
+
+Example:
 
 ```json
 {
+  "$schema": "https://raw.githubusercontent.com/feature-lint/feature-lint/pages/schema/feature-lint-v0.0.15.schema.json",
   "rootDir": "./src/features",
-
   "featureTypes": {
-    "domain": {
-      "buildingBlocks": ["interaction", "models"]
-    },
-    "react-feature": {
-      "buildingBlocks": ["components", "state-controller", "interaction-controller", "wired"]
-    },
+    "react": {
+      "featureNameMatcher": "react.*-",
+      "buildingBlocks": {
+        "components": {
+          
+        }
+      }
+    }
   }
 }
-
 ```
 
-Where root is the src folder of all the features inside the project.
-
+# Licence
+This project is licensed using the MIT Licence.
