@@ -3,6 +3,7 @@ import { ZodType } from "zod";
 import { dependenciesRuleDefinition } from "../rule-definitions/dependencies.js";
 import { dependentsRuleDefinition } from "../rule-definitions/dependents.js";
 import { maxModulesPerBuildingBlockRuleDefinition } from "../rule-definitions/maxModulesPerBuildingBlock.js";
+import { nameMatcherRuleDefinition } from "../rule-definitions/ensureName.js";
 import { noAncestorFeatureDependencyRuleDefinition } from "../rule-definitions/noAncestorFeatureDependency.js";
 import { noCyclicFeatureDependencyRuleDefinition } from "../rule-definitions/noCyclicFeatureDependency.js";
 import { noMissingFeatureTypesRuleDefinition } from "../rule-definitions/noMissingFeatureTypes.js";
@@ -18,6 +19,7 @@ import {
 import { isDefined } from "../shared/util/isDefined.js";
 
 export const RULE_DEFINITIONS = [
+  nameMatcherRuleDefinition,
   dependenciesRuleDefinition,
   dependentsRuleDefinition,
   maxModulesPerBuildingBlockRuleDefinition,

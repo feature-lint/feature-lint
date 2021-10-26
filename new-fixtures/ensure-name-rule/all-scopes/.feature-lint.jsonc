@@ -1,0 +1,21 @@
+{
+  "$schema": "../../../packages/schema/dist/feature-lint.schema.json",
+
+  "rootDir": "./src",
+
+  "featureTypes": {
+    "react": {
+      "featureNameMatcher": "react-.*",
+      "buildingBlocks": {
+        "components": {
+          "rules": [
+            {
+              "name": "ensure-name",
+              "regex": "foo-\\w*.tsx$"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
