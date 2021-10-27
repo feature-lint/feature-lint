@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[41],{8177:function(e){e.exports=JSON.parse('{"allTagsPath":"/feature-lint/blog/tags","slug":"/feature-lint/blog/tags/hello","name":"hello","count":2,"permalink":"/feature-lint/blog/tags/hello"}')}}]);
