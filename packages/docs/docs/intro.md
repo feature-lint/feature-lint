@@ -6,7 +6,7 @@ slug: /
 # Why Feature-lint
 
 When working in a team, the most important thing is **to ensure everyone does things the same way**.
-This starts with formatting the code (e.g. using [prettier](prettier.io)) and ends that everyone
+This starts with formatting the code (e.g. using [prettier](http://prettier.io)) and ends that everyone
 names the files according to the naming conventions.
 
 But, from an architectural perspective, it may also be necessary, that **imports** are ensured and 
