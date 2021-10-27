@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Ensure Name
 
-The ensure name ensures, that building blocks follow a specific naming pattern.
+The ensure name-rule ensures, that building blocks follow a specific naming pattern.
 
 ## Reasoning
 In projects working with many persons beeing involved, it's neat to have all the persons adhere to some
