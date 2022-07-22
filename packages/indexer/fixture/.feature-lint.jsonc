@@ -1,0 +1,19 @@
+{
+  "$schema": "../../../packages/schema/dist/feature-lint.schema.json",
+
+  "rootDir": "./src",
+
+  "featureTypes": {
+    "foo": {
+      "featureNameMatcher": "foo-.*",
+      "buildingBlocks": {
+        "adapter": {
+          rules:[
+          ]
+        },
+        "domain": {
+        },
+      }
+    }
+  }
+}

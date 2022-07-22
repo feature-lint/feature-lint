@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../packages/schema/dist/feature-lint.schema.json",
+
+  "rootDir": "./src",
+
+  "featureTypes": {
+    "foo": {
+      "featureNameMatcher": "foo-.*",
+      "buildingBlocks": {
+        "adapter": {
+          rules:[
+            {
+              name: "restricted-signature",
+              signature: {
+                type: "TOP_LEVEL_FUNCTION",
+                specification: "(@domain) => @domain"
+              }
+            }
+          ]
+        },
+        "domain": {
+        },
+      }
+    }
+  }
+}
+
+
+

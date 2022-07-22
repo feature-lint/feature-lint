@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "pnpm recursive run build --filter ./packages",
+    "build": "pnpm recursive run build ",
     "build:ci": "CI=true pnpm run build",
     "test": "pnpm recursive test --filter ./packages --no-bail",
     "test:ci": "CI=true pnpm run test",
