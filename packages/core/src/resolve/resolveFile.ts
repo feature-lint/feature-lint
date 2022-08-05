@@ -4,6 +4,7 @@ import { isSubPath } from "./util/isSubPath.js";
 import { createModule } from "./createModule.js";
 import { resolveDirectory } from "./resolveDirectory.js";
 import { resolveModuleDependencies } from "./resolveModuleDependencies.js";
+import { resolveModuleTopLevelFunctions } from "./resolveTopLevelFunctions";
 
 export function resolveFile(
   resolveResult: ResolveResult,
@@ -41,6 +42,7 @@ export function resolveFile(
   resolveResult.resolvedModuleByFilePath.set(filePath, resolvedModule);
 
   resolveModuleDependencies(resolveResult, resolvedModule);
+  resolveModuleTopLevelFunctions(resolveResult, resolvedModule);
 
   return true;
 }

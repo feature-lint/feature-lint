@@ -30,13 +30,15 @@ export function createModule(
 
         dependentModuleFilesPaths: new Set(),
 
+        topLevelFunctions: new Set(),
+
         buildingBlockPrivate: false,
 
         featurePrivate: false,
 
         parentFeaturePrivate: undefined,
 
-        siblingFeaturePrivate: undefined,
+        siblingFeaturePrivate: undefined
       };
     }
     case "inFeaturesFolder": {
@@ -53,6 +55,8 @@ export function createModule(
 
         filePath: path.normalize(moduleFilePath),
 
+        topLevelFunctions: new Set(),
+
         featureName: state.feature.name,
 
         dependencyModuleFilePaths: new Set(),
@@ -69,7 +73,7 @@ export function createModule(
         parentFeaturePrivate: undefined,
 
         // TODO
-        siblingFeaturePrivate: undefined,
+        siblingFeaturePrivate: undefined
       };
     }
     case "inFeature": {
@@ -81,6 +85,8 @@ export function createModule(
         type: "featureModule",
 
         tsSourceFile,
+
+        topLevelFunctions: new Set(),
 
         externalModuleByModuleName: new Map(),
 
@@ -102,7 +108,7 @@ export function createModule(
         parentFeaturePrivate: undefined,
 
         // TODO
-        siblingFeaturePrivate: undefined,
+        siblingFeaturePrivate: undefined
       };
     }
     case "inBuildingBlock": {
@@ -114,6 +120,7 @@ export function createModule(
         type: "buildingBlockModule",
 
         tsSourceFile,
+        topLevelFunctions: new Set(),
 
         externalModuleByModuleName: new Map(),
 
@@ -133,7 +140,7 @@ export function createModule(
 
         parentFeaturePrivate: state.parentFeaturePrivate?.name,
 
-        siblingFeaturePrivate: state.siblingFeaturePrivate?.name,
+        siblingFeaturePrivate: state.siblingFeaturePrivate?.name
       };
     }
   }

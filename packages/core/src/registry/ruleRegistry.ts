@@ -14,11 +14,13 @@ import { restrictedVisibilityRuleDefinition } from "../rule-definitions/restrict
 import { wrongFeatureTypeMatchRuleDefinition } from "../rule-definitions/wrongFeatureTypeMatch.js";
 import {
   RuleDefinition,
-  RuleDefinitionType,
+  RuleDefinitionType
 } from "../rule/model/RuleDefinition.js";
 import { isDefined } from "../shared/util/isDefined.js";
+import { topLevelFunctionNameMatcherRuleDefinition } from "../rule-definitions/topLevelFunctionNaming";
 
 export const RULE_DEFINITIONS = [
+  topLevelFunctionNameMatcherRuleDefinition,
   nameMatcherRuleDefinition,
   dependenciesRuleDefinition,
   dependentsRuleDefinition,
@@ -30,11 +32,11 @@ export const RULE_DEFINITIONS = [
   noUnknownFeatureTypesRuleDefinition,
   restrictedExternalModulesRuleDefinition,
   restrictedVisibilityRuleDefinition,
-  wrongFeatureTypeMatchRuleDefinition,
+  wrongFeatureTypeMatchRuleDefinition
 ] as const;
 
 const ROOT_RULE_CONFIG_SCHEMAS: ZodType<any>[] = RULE_DEFINITIONS.map(
-  (ruleDefinition) => {
+  ruleDefinition => {
     return ruleDefinition.configSchemaByScope.root;
   }
 ).filter(isDefined);
@@ -46,18 +48,19 @@ export const ROOT_RULE_CONFIG_SCHEMA = ROOT_RULE_CONFIG_SCHEMAS.reduce(
 );
 
 const FEATURE_TYPE_RULE_CONFIG_SCHEMAS: ZodType<any>[] = RULE_DEFINITIONS.map(
-  (ruleDefinition) => {
+  ruleDefinition => {
     return ruleDefinition.configSchemaByScope.featureType;
   }
 ).filter(isDefined);
 
-export const FEATURE_TYPE_RULE_CONFIG_SCHEMA =
-  FEATURE_TYPE_RULE_CONFIG_SCHEMAS.reduce((previousSchema, currentSchema) => {
+export const FEATURE_TYPE_RULE_CONFIG_SCHEMA = FEATURE_TYPE_RULE_CONFIG_SCHEMAS.reduce(
+  (previousSchema, currentSchema) => {
     return previousSchema.or(currentSchema);
-  });
+  }
+);
 
 const FEATURE_RULE_CONFIG_SCHEMAS: ZodType<any>[] = RULE_DEFINITIONS.map(
-  (ruleDefinition) => {
+  ruleDefinition => {
     return ruleDefinition.configSchemaByScope.feature;
   }
 ).filter(isDefined);
@@ -69,15 +72,16 @@ export const FEATURE_RULE_CONFIG_SCHEMA = FEATURE_RULE_CONFIG_SCHEMAS.reduce(
 );
 
 const BUILDING_BLOCK_RULE_CONFIG_SCHEMAS: ZodType<any>[] = RULE_DEFINITIONS.map(
-  (ruleDefinition) => {
+  ruleDefinition => {
     return ruleDefinition.configSchemaByScope.buildingBlock;
   }
 ).filter(isDefined);
 
-export const BUILDING_BLOCK_RULE_CONFIG_SCHEMA =
-  BUILDING_BLOCK_RULE_CONFIG_SCHEMAS.reduce((previousSchema, currentSchema) => {
+export const BUILDING_BLOCK_RULE_CONFIG_SCHEMA = BUILDING_BLOCK_RULE_CONFIG_SCHEMAS.reduce(
+  (previousSchema, currentSchema) => {
     return previousSchema.or(currentSchema);
-  });
+  }
+);
 
 export const getRuleDefinitionByNameAndType = <
   RULE_DEFINTION_TYPE extends RuleDefinitionType

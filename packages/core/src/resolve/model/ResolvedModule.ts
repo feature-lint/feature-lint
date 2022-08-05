@@ -1,4 +1,5 @@
 import ts from "typescript";
+import { TopLevelFunction } from "../resolveTopLevelFunctions";
 
 export type ResolvedModule =
   | ResolvedFeatureModule
@@ -36,6 +37,8 @@ interface CommonResolvedModule {
   dependencyModuleInfoByFilePath: Map<string, DependencyModuleInfo>;
 
   dependentModuleFilesPaths: Set<string>;
+
+  topLevelFunctions: Set<TopLevelFunction>;
 
   buildingBlockPrivate: boolean;
 

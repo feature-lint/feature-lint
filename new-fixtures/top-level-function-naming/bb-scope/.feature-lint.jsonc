@@ -1,0 +1,21 @@
+{
+  "$schema": "../../../packages/schema/dist/feature-lint.schema.json",
+
+  "rootDir": "./src",
+
+  "featureTypes": {
+    "domain": {
+      "featureNameMatcher": "domain-.*",
+      "buildingBlocks": {
+        "repositories": {
+          "rules": [
+            {
+              name: "exported-top-level-function-name",
+              regex: "(find.*)|(save.*)"
+            }
+          ]
+        },
+      }
+    },
+  }
+}
